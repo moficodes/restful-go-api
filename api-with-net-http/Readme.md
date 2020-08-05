@@ -2,7 +2,7 @@
 
 ## Run the example
 ```
-git checkout origin/standard-library-net-http-03
+git checkout origin/standard-library-net-http-04
 ```
 
 If you are not already in the folder
