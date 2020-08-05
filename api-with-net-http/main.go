@@ -23,17 +23,16 @@ import (
 // this is what takes care of incoming request from our client
 // It gets many names Mux, ServerMux, Server, Router etc.
 
-type anything int
+type server struct{}
 
-// to be considered a handler, a type needs to implement the ServeHTTP method
-func (a anything) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte(`hello world`))
+func (s *server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("hello world"))
 }
 
 func main() {
-	var thisthing anything
+	s := &server{}
 	// because thisthing is an instance on anything it is now a handler and we can pass it to http.Handle
-	http.Handle("/", thisthing)
+	http.Handle("/", s)
 	port := "7999"
 	log.Println("starting web server on port", port)
 	// this is a blocking process
