@@ -15,7 +15,9 @@ At each level of the workshop the branch should be working code. If it is not I 
 ## Sections
 
 1. Standard Library net/http
-    i. [Chapter 1](https://github.com/moficodes/restful-go-api/tree/standard-library-net-http-01/api-with-net-http) Getting Started
-    ii. [Chapter 2](https://github.com/moficodes/restful-go-api/tree/standard-library-net-http-02/api-with-net-http) Custom Handler Type
-    iii. [Chapter 3](https://github.com/moficodes/restful-go-api/tree/standard-library-net-http-03/api-with-net-http) JSON Response
-    iv. [Chapter 4](https://github.com/moficodes/restful-go-api/tree/standard-library-net-http-04/api-with-net-http) HTTP Verbs
+    i. [Getting Started](https://github.com/moficodes/restful-go-api/tree/standard-library-net-http-01/api-with-net-http)
+    ii. [Custom Handler Type](https://github.com/moficodes/restful-go-api/tree/standard-library-net-http-02/api-with-net-http)
+    iii. [JSON Response](https://github.com/moficodes/restful-go-api/tree/standard-library-net-http-03/api-with-net-http)
+    iv. [HTTP Verbs](https://github.com/moficodes/restful-go-api/tree/standard-library-net-http-04/api-with-net-http)
+    v. [Request Body](https://github.com/moficodes/restful-go-api/tree/standard-library-net-http-05/api-with-net-http)
+    vi. [Handler vs HandlerFunc vs *HandlerMethod](https://github.com/moficodes/restful-go-api/tree/standard-library-net-http-06/api-with-net-http)

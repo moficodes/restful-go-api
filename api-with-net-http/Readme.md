@@ -2,7 +2,7 @@
 
 ## Run the example
 ```
-git checkout origin/standard-library-net-http-05
+git checkout origin/standard-library-net-http-06
 ```
 
 If you are not already in the folder
@@ -64,9 +64,11 @@ Your output would looks somehting like this
 
 ## HTTP Verbs
 In the previous example we had a method called `getUser`. It is pretty clear it is a GET operation. But if you were to make a request like
-```
+
+```bash
 curl -x POST "localhost:7999/user
 ```
+
 You would still see the same output. 
 
 This might seem weird since we had named our function `getUser` we probably was expecting to only do get in that route. But naming our function has no effect on the HTTP verb we allow. 
@@ -74,6 +76,7 @@ This might seem weird since we had named our function `getUser` we probably was 
 ```go
 http.HandleFunc("/user", s.getUser)
 ```
+
 This is the line of code that registers that route. And all it says is anytime a request comes we will be serving that using the `s.getUser` HandlerFunc.
 
 net/http does not have direct support for http verbs like GET, POST, PUT, DELETE etc. But it is easily implementable. This is also a selling poing for other library / framework that is more developer friendly in letting us control the allowed http methods.
@@ -94,3 +97,9 @@ Here we are updating the username to `mofi` and email to `moficodes@ibm.com`.
 We should see `{"update": "ok"}` Print.
 
 We can also try sending a malformed JSON string. This will return a `405` Bad Request.
+
+## Handler vs HandlerFunc vs *HandlerMethod
+
+> The HandlerMethod is in * because that is not a real term go uses. I am using it to differentiate between a HandlerFunc attached to a type vs a regular function that has the same type as ServeHTTP function.
+
+The main difference between all of these is developer experience. Creating a new Handler for each of our route is probably not going to be fun. HandlerFunc or methods on structs make is really flexible to build our routes. Choose whichever fits the problem at hand best. For our `/user` endpoint we needed access to a resource that was attached to our `server` struct. So using a `HandlerMethod` was ideal. But if we had a different route that did not have any dependency like that I might have opted for a regular function.
