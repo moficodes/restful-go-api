@@ -1,9 +1,11 @@
 package main
 
 import (
+	"encoding/base64"
 	"encoding/json"
 	"log"
 	"net/http"
+	"strings"
 )
 
 // A REST server has 3 main components
@@ -71,6 +73,15 @@ func (s *server) user(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// this handlerFuncs job is simple
+// send back whatever was sent to it as base64 encoded
+func getBase64(w http.ResponseWriter, r *http.Request) {
+	message := strings.Split(r.URL.String(), "/")[2]
+	data := []byte(message)
+	str := base64.StdEncoding.EncodeToString(data)
+	w.Write([]byte(str))
+}
+
 func main() {
 	s := &server{
 		User: User{
@@ -82,6 +93,7 @@ func main() {
 	// because s is an instance on server it is now a handler and we can pass it to http.Handle
 	http.Handle("/", s)
 	http.HandleFunc("/user", s.user)
+	http.HandleFunc("/base64/", getBase64)
 
 	port := "7999"
 	log.Println("starting web server on port", port)

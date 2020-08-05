@@ -21,3 +21,4 @@ At each level of the workshop the branch should be working code. If it is not I 
     iv. [HTTP Verbs](https://github.com/moficodes/restful-go-api/tree/standard-library-net-http-04/api-with-net-http)
     v. [Request Body](https://github.com/moficodes/restful-go-api/tree/standard-library-net-http-05/api-with-net-http)
     vi. [Handler vs HandlerFunc vs *HandlerMethod](https://github.com/moficodes/restful-go-api/tree/standard-library-net-http-06/api-with-net-http)
+    vii. [Path Parameter](https://github.com/moficodes/restful-go-api/tree/standard-library-net-http-07/api-with-net-http)

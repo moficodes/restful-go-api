@@ -2,7 +2,7 @@
 
 ## Run the example
 ```
-git checkout origin/standard-library-net-http-06
+git checkout origin/standard-library-net-http-07
 ```
 
 If you are not already in the folder
@@ -103,3 +103,22 @@ We can also try sending a malformed JSON string. This will return a `405` Bad Re
 > The HandlerMethod is in * because that is not a real term go uses. I am using it to differentiate between a HandlerFunc attached to a type vs a regular function that has the same type as ServeHTTP function.
 
 The main difference between all of these is developer experience. Creating a new Handler for each of our route is probably not going to be fun. HandlerFunc or methods on structs make is really flexible to build our routes. Choose whichever fits the problem at hand best. For our `/user` endpoint we needed access to a resource that was attached to our `server` struct. So using a `HandlerMethod` was ideal. But if we had a different route that did not have any dependency like that I might have opted for a regular function.
+
+## Path Parameter
+Matching complex routes using the standard library net/http package is quite difficult. We just added a new route `/base64/` that returns base64 representation anything sent after the `/`.
+
+```bash
+curl localhost:7999/base64/hello-world
+```
+
+We should see output `aGVsbG8td29ybGQ=%`
+
+Doing anything more complex would be too cumbersome. This is another reason many developers will reach for a library/framework. And if your application has needs for dynamic routes net/http might not be the best solution.
+
+For example matching `/user/1/blog/4/comment/2` is a very common REST pattern for routes. And with just net/http it will be alot of work to implement something that does this.
+
+Luckily we have many great libraries and frameworks at our disposal.
+
+We will move on to gorilla/mux now.
+
+>The example used here does not follow REST Philosophy. We can have a longer discussion about why something is or isn't restful. The function is more of an action than a representation of some entity.
