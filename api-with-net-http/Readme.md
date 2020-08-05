@@ -19,3 +19,7 @@ curl localhost:7999
 ```
 
 You should see output `hello world` printed.
+
+## Why a Struct
+In our previous example we implemented handler interface on a `anything` type. That worked. So why we are using a `server` struct?
+The benefit of using a struct becomes apparent when we build more complex servers. And want to have other methods / types in the struct for instance logger.

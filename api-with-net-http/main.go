@@ -31,7 +31,7 @@ func (s *server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	s := &server{}
-	// because thisthing is an instance on anything it is now a handler and we can pass it to http.Handle
+	// because s is an instance on server it is now a handler and we can pass it to http.Handle
 	http.Handle("/", s)
 	port := "7999"
 	log.Println("starting web server on port", port)
