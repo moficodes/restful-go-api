@@ -2,7 +2,7 @@
 
 ## Run the example
 ```
-git checkout origin/standard-library-net-http-02
+git checkout origin/standard-library-net-http-04
 ```
 
 If you are not already in the folder
@@ -61,4 +61,20 @@ Your output would looks somehting like this
 * Connection #0 to host localhost left intact
 * Closing connection 0
 ```
+
+## HTTP Verbs
+In the previous example we had a method called `getUser`. It is pretty clear it is a GET operation. But if you were to make a request like
+```
+curl -x POST "localhost:7999/user
+```
+You would still see the same output. 
+
+This might seem weird since we had named our function `getUser` we probably was expecting to only do get in that route. But naming our function has no effect on the HTTP verb we allow. 
+
+```go
+http.HandleFunc("/user", s.getUser)
+```
+This is the line of code that registers that route. And all it says is anytime a request comes we will be serving that using the `s.getUser` HandlerFunc.
+
+net/http does not have direct support for http verbs like GET, POST, PUT, DELETE etc. But it is easily implementable. This is also a selling poing for other library / framework that is more developer friendly in letting us control the allowed http methods.
 
