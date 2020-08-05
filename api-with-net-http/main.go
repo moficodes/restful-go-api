@@ -41,25 +41,22 @@ func (s *server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("hello world"))
 }
 
+//
 func (s *server) getUser(w http.ResponseWriter, r *http.Request) {
 	// just because we are writing JSON does not mean our client will understand
 	// with this header we make it explicit
 	w.Header().Add("Content-Type", "application/json")
 
-	// there are a few different way to acheive the same result
-
-	// b, err := json.Marshal(s.User)
-	// if err != nil {
-	// 	w.WriteHeader(http.StatusInternalServerError)
-	// 	return
-	// }
-	// w.WriteHeader(http.StatusOK)
-	// w.Write(b)
-
-	// TODO: uncomment line 51:57 and comment out 60:61 and see if the behavior change or not.
-	// spoiler alert: it won't (hopefully...)
-	e := json.NewEncoder(w)
-	e.Encode(s.User)
+	switch r.Method {
+	// if request method is GET business as usual
+	case "GET":
+		e := json.NewEncoder(w)
+		e.Encode(s.User)
+	// for all other query
+	// return empty response and 404 status code
+	default:
+		w.WriteHeader(http.StatusNotFound)
+	}
 }
 
 func main() {
