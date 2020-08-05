@@ -2,7 +2,7 @@
 
 ## Run the example
 ```
-git checkout origin/standard-library-net-http-04
+git checkout origin/standard-library-net-http-05
 ```
 
 If you are not already in the folder
@@ -78,3 +78,19 @@ This is the line of code that registers that route. And all it says is anytime a
 
 net/http does not have direct support for http verbs like GET, POST, PUT, DELETE etc. But it is easily implementable. This is also a selling poing for other library / framework that is more developer friendly in letting us control the allowed http methods.
 
+## REST Routes
+In REST the same route can mean different thing based on the HTTP method of the request.
+
+For example our `/user` route can be a retrieve on `GET` and update on `PUT`
+
+To test out put
+
+```
+curl -X PUT -d '{"username":"mofi","email":"moficodes@ibm.com","age":27}' localhost:7999/user
+```
+
+Here we are updating the username to `mofi` and email to `moficodes@ibm.com`. 
+
+We should see `{"update": "ok"}` Print.
+
+We can also try sending a malformed JSON string. This will return a `405` Bad Request.

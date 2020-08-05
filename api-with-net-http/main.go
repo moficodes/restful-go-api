@@ -42,7 +42,7 @@ func (s *server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 //
-func (s *server) getUser(w http.ResponseWriter, r *http.Request) {
+func (s *server) user(w http.ResponseWriter, r *http.Request) {
 	// just because we are writing JSON does not mean our client will understand
 	// with this header we make it explicit
 	w.Header().Add("Content-Type", "application/json")
@@ -52,6 +52,18 @@ func (s *server) getUser(w http.ResponseWriter, r *http.Request) {
 	case "GET":
 		e := json.NewEncoder(w)
 		e.Encode(s.User)
+	case "PUT":
+		w.Header().Add("Accept", "application/json")
+		var body User
+		decoder := json.NewDecoder(r.Body)
+		err := decoder.Decode(&body)
+		if err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+		s.User = body
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte(`{"update": "ok"}`))
 	// for all other query
 	// return empty response and 404 status code
 	default:
@@ -69,7 +81,7 @@ func main() {
 	}
 	// because s is an instance on server it is now a handler and we can pass it to http.Handle
 	http.Handle("/", s)
-	http.HandleFunc("/user", s.getUser)
+	http.HandleFunc("/user", s.user)
 
 	port := "7999"
 	log.Println("starting web server on port", port)
