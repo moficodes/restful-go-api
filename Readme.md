@@ -15,4 +15,5 @@ At each level of the workshop the branch should be working code. If it is not I 
 ## Sections
 
 1. Standard Library net/http
-    i. [Chapter 1](https://github.com/moficodes/restful-go-api/tree/standard-library-net-http-01)
+    i. [Chapter 1](https://github.com/moficodes/restful-go-api/tree/standard-library-net-http-01) Getting Started
+    ii. [Chapter 2](https://github.com/moficodes/restful-go-api/tree/standard-library-net-http-02) Custom Handler Type
