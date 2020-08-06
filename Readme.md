@@ -26,5 +26,5 @@ At each level of the workshop the branch should be working code. If it is not I 
 2. Gorilla Mux
     - [Why Gorilla Mux](https://github.com/moficodes/restful-go-api/tree/gorilla-mux-01/api-with-gorilla-mux)
     - [Path Parameter](https://github.com/moficodes/restful-go-api/tree/gorilla-mux-02/api-with-gorilla-mux)
-    - [Query Parameter]()
+    - [Query Parameter](https://github.com/moficodes/restful-go-api/tree/gorilla-mux-03/api-with-gorilla-mux)
     

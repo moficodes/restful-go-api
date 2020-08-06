@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"strings"
 
 	"github.com/gorilla/mux"
 )
@@ -36,7 +37,7 @@ type Instructor struct {
 	Name      string   `json:"name"`
 	Email     string   `json:"email"`
 	Company   string   `json:"company"`
-	Experties []string `json:"experties"`
+	Expertise []string `json:"expertise"`
 }
 
 // Course is course being taught
@@ -73,6 +74,22 @@ func readContent(filename string, store interface{}) error {
 	return json.Unmarshal(b, store)
 }
 
+func contains(in []string, val []string) bool {
+	found := 0
+
+	for _, n := range in {
+		n = strings.ToLower(n)
+		for _, v := range val {
+			if n == strings.ToLower(v) {
+				found++
+				break
+			}
+		}
+	}
+
+	return len(val) == found
+}
+
 func (s *server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Content-Type", "application/json")
 	e := json.NewEncoder(w)
@@ -81,18 +98,89 @@ func (s *server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 func getAllUsers(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Content-Type", "application/json")
+
+	query := r.URL.Query()
+	interests, ok := query["interest"]
+	// the key was found.
+	if ok {
+		set := make(map[int]User)
+		for _, user := range users {
+
+			if contains(user.Interests, interests) {
+				set[user.ID] = user
+			}
+		}
+
+		res := make([]User, len(set))
+		idx := 0
+		for _, v := range set {
+			res[idx] = v
+			idx++
+		}
+
+		e := json.NewEncoder(w)
+		e.Encode(res)
+		return
+	}
+
 	e := json.NewEncoder(w)
 	e.Encode(users)
 }
 
 func getAllInstructors(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Content-Type", "application/json")
+
+	query := r.URL.Query()
+	expertise, ok := query["expertise"]
+	// the key was found.
+	if ok {
+		set := make(map[int]Instructor)
+		for _, instructor := range instructors {
+			if contains(instructor.Expertise, expertise) {
+				set[instructor.ID] = instructor
+			}
+		}
+
+		res := make([]Instructor, len(set))
+		idx := 0
+		for _, v := range set {
+			res[idx] = v
+			idx++
+		}
+
+		e := json.NewEncoder(w)
+		e.Encode(res)
+		return
+	}
+
 	e := json.NewEncoder(w)
 	e.Encode(instructors)
 }
 
 func getAllCourses(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Content-Type", "application/json")
+	query := r.URL.Query()
+	topics, ok := query["topic"]
+	if ok {
+		set := make(map[int]Course)
+		for _, course := range courses {
+			if contains(course.Topics, topics) {
+				set[course.ID] = course
+			}
+		}
+
+		res := make([]Course, len(set))
+		idx := 0
+		for _, v := range set {
+			res[idx] = v
+			idx++
+		}
+
+		e := json.NewEncoder(w)
+		e.Encode(res)
+		return
+	}
+
 	e := json.NewEncoder(w)
 	e.Encode(courses)
 }
@@ -219,7 +307,7 @@ func main() {
 		s.Routes = append(s.Routes, t)
 		return nil
 	})
-	log.Println("available routes...", s.Routes)
+	log.Println("available routes: ", s.Routes)
 	// instead of using the default handler that comes with net/http we use the mux router from gorilla mux
 	log.Fatal(http.ListenAndServe(":"+port, r))
 }
