@@ -24,4 +24,5 @@ At each level of the workshop the branch should be working code. If it is not I 
     vii. [Path Parameter](https://github.com/moficodes/restful-go-api/tree/standard-library-net-http-07/api-with-net-http)
   
 2. Gorilla Mux
-    i. [Why Gorilla Mux]()
+    i. [Why Gorilla Mux](https://github.com/moficodes/restful-go-api/tree/gorilla-mux-01/api-with-gorilla-mux)
+    ii. [Path Parameter]()

@@ -63,3 +63,37 @@ curl localhost:7999/user
 curl -X PUT -d '{"username":"mofi","email":"mofi@gmail.com","age":27}' localhost:7999/user
 ```
 
+## Path Params
+With net/http we saw a simple example of how we can do path params. We gorilla mux this becomes significantly easier (this is also where the libraries and framework differ in implementations). 
+
+For this part we start with a more complex example. Lets imagine a application that is keeping track of courses, instructors and attendees to these courses.
+
+We have HandlerFunc for returing all users, instructors and courses. As well as getting individual user, course or instructor. And thats the route we are interested in here.
+
+```go
+  r.HandleFunc("/users/{id}", getUserByID).Methods(http.MethodGet)
+```
+
+In this route we have a path param `{id}` which we will access in the `getUserByID` function. 
+
+```go
+  pathParams := mux.Vars(r)
+```
+
+Thats all we have to do to get access to all the path parameters in `map[string]string`. Although depending on the use case that might not be enough. For example in our use case we expect the param to be an int. Its simple to convert the data to the right format. 
+
+```go
+if val, ok := pathParams["id"]; ok {
+  id, err = strconv.Atoi(val)
+  if err != nil {
+    w.WriteHeader(http.StatusBadRequest)
+    w.Write([]byte(`{"error": "need a valid id"}`))
+    return
+  }
+}
+```
+
+Sending the error message and setting the status code helps the consumer of this api to take appropriate actions.
+
+Once we hace access to the id we can search our list for the appropirate resource. In our case its looping through an array. In most cases it would be querying some sort of database.
+
