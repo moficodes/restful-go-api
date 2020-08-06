@@ -90,6 +90,21 @@ func contains(in []string, val []string) bool {
 	return len(val) == found
 }
 
+func containsInt(in []int, val []string) bool {
+	found := 0
+	for _, _n := range in {
+		n := strconv.Itoa(_n)
+		for _, v := range val {
+			if n == v {
+				found++
+				break
+			}
+		}
+	}
+
+	return len(val) == found
+}
+
 func (s *server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Content-Type", "application/json")
 	e := json.NewEncoder(w)
@@ -103,19 +118,11 @@ func getAllUsers(w http.ResponseWriter, r *http.Request) {
 	interests, ok := query["interest"]
 	// the key was found.
 	if ok {
-		set := make(map[int]User)
+		res := make([]User, 0)
 		for _, user := range users {
-
 			if contains(user.Interests, interests) {
-				set[user.ID] = user
+				res = append(res, user)
 			}
-		}
-
-		res := make([]User, len(set))
-		idx := 0
-		for _, v := range set {
-			res[idx] = v
-			idx++
 		}
 
 		e := json.NewEncoder(w)
@@ -134,18 +141,11 @@ func getAllInstructors(w http.ResponseWriter, r *http.Request) {
 	expertise, ok := query["expertise"]
 	// the key was found.
 	if ok {
-		set := make(map[int]Instructor)
+		res := make([]Instructor, 0)
 		for _, instructor := range instructors {
 			if contains(instructor.Expertise, expertise) {
-				set[instructor.ID] = instructor
+				res = append(res, instructor)
 			}
-		}
-
-		res := make([]Instructor, len(set))
-		idx := 0
-		for _, v := range set {
-			res[idx] = v
-			idx++
 		}
 
 		e := json.NewEncoder(w)
@@ -162,18 +162,11 @@ func getAllCourses(w http.ResponseWriter, r *http.Request) {
 	query := r.URL.Query()
 	topics, ok := query["topic"]
 	if ok {
-		set := make(map[int]Course)
+		res := make([]Course, 0)
 		for _, course := range courses {
 			if contains(course.Topics, topics) {
-				set[course.ID] = course
+				res = append(res, course)
 			}
-		}
-
-		res := make([]Course, len(set))
-		idx := 0
-		for _, v := range set {
-			res[idx] = v
-			idx++
 		}
 
 		e := json.NewEncoder(w)
@@ -183,6 +176,28 @@ func getAllCourses(w http.ResponseWriter, r *http.Request) {
 
 	e := json.NewEncoder(w)
 	e.Encode(courses)
+}
+
+func getCoursesWithInstructorAndAttendee(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("Content-Type", "application/json")
+	// we don't have to check for multiple instructor because the way our data is structured
+	// there is no way multiple instructor can be part of same course
+	_instructor := r.URL.Query().Get("instructor")
+	instructorID, _ := strconv.Atoi(_instructor)
+	// but multiple attendee can be part of the same course
+	// since we gurrantee only valid integer queries will be sent to this route
+	// we don't need to check if there is value or not.
+	attendees := r.URL.Query()["attendee"]
+	res := make([]Course, 0)
+
+	for _, course := range courses {
+		if course.InstructorID == instructorID && containsInt(course.Attendees, attendees) {
+			res = append(res, course)
+		}
+	}
+
+	e := json.NewEncoder(w)
+	e.Encode(res)
 }
 
 func getUserByID(w http.ResponseWriter, r *http.Request) {
@@ -287,6 +302,11 @@ func main() {
 	r.Handle("/", s)
 
 	r.HandleFunc("/users", getAllUsers).Methods(http.MethodGet)
+
+	r.HandleFunc("/courses", getCoursesWithInstructorAndAttendee).
+		Queries("instructor", "{instructor:[0-9]+}", "attendee", "{attendee:[0-9]+}").
+		Methods(http.MethodGet)
+
 	r.HandleFunc("/courses", getAllCourses).Methods(http.MethodGet)
 	r.HandleFunc("/instructors", getAllInstructors).Methods(http.MethodGet)
 
