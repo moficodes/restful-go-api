@@ -7,7 +7,7 @@ Lets see how gorilla mux addresses the issues we saw with net/http.
 ## Run the example
 
 ```bash
-git checkout origin/gorilla-mux-01
+git checkout origin/gorilla-mux-02
 ```
 
 If you are not already in the folder
