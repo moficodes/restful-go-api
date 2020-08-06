@@ -119,5 +119,20 @@ With this we get access the the `map[string][]string`. Some applications mandate
   interests, ok := query["interest"]
 ```
 
-In go on map data access we get a second value which says if the value was there or not. If there is no query with the key we just return the whole result. In this example we are treating the queries as an `and` relation. If we query for `NodeJS` and `AI` all the users with interests in both of the topic will be returned. It is also possible to treat this like a or relation albeit not that common. 
+In go on map data access we get a second value which says if the value was there or not. If there is no query with the key we just return the whole result. In this example we are treating the queries as an `and` relation. If we query for `NodeJS` and `AI` all the users with interests in both of the topic will be returned. It is also possible to treat this like a or relation albeit not that common.
 
+## Match Query
+
+In the previous example we had a query parameter that was optional. But what if we want to go to a different route based on a query parameter?
+
+Yes we can.
+
+```go
+r.HandleFunc("/courses", getCoursesWithInstructorAndAttendee).
+  Queries("instructor", "{instructor:[0-9]+}", "attendee", "{attendee:[0-9]+}").
+  Methods(http.MethodGet)
+```
+
+This route will only match request with query `instructor` and `attendee` and the value type integer. Anything else will match the other route with the same path. Or return 404 if nothing else matches.
+
+>The route matching is top to bottom read operation. If you have more specific route you should put them above otherwise a generic route might catch and respond.
