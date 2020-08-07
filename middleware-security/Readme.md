@@ -31,4 +31,4 @@ and then wrapping our main router
 log.Fatal(http.ListenAndServe(":"+port, Logger(r)))
 ```
 
-On any request made to our server it will now print out the 
+On any request made to our server it will now print out the url of request on every request.
