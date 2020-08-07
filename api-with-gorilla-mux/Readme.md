@@ -68,7 +68,7 @@ curl localhost:7999/api/v1/users
 
 ## Path Params
 
-With net/http we saw a simple example of how we can do path params. We gorilla mux this becomes significantly easier (this is also where the libraries and framework differ in implementations). 
+With net/http we saw a simple example of how we can do path params. We gorilla mux this becomes significantly easier (this is also where the libraries and framework differ in implementations).
 
 For this part we start with a more complex example. Lets imagine a application that is keeping track of courses, instructors and attendees to these courses.
 
