@@ -8,6 +8,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/gorilla/mux"
 )
@@ -296,9 +297,25 @@ func getInstructorByID(w http.ResponseWriter, r *http.Request) {
 	e.Encode(data)
 }
 
+func Chain(f http.Handler,
+	middlewares ...func(next http.Handler) http.Handler) http.Handler {
+	for _, m := range middlewares {
+		f = m(f)
+	}
+	return f
+}
+
 func Logger(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		log.Println(r.URL)
+		next.ServeHTTP(w, r)
+	})
+}
+
+func Time(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		start := time.Now()
+		defer func() { log.Println(r.URL.Path, time.Since(start)) }()
 		next.ServeHTTP(w, r)
 	})
 }
@@ -309,6 +326,7 @@ func main() {
 
 	r.Handle("/", s)
 	api := r.PathPrefix("/api/v1").Subrouter()
+	api.Use(Time)
 
 	api.HandleFunc("/users", getAllUsers).Methods(http.MethodGet)
 
@@ -338,5 +356,5 @@ func main() {
 	})
 	log.Println("available routes: ", s.Routes)
 	// instead of using the default handler that comes with net/http we use the mux router from gorilla mux
-	log.Fatal(http.ListenAndServe(":"+port, Logger(r)))
+	log.Fatal(http.ListenAndServe(":"+port, Chain(r, Logger)))
 }

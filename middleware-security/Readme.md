@@ -32,3 +32,37 @@ log.Fatal(http.ListenAndServe(":"+port, Logger(r)))
 ```
 
 On any request made to our server it will now print out the url of request on every request.
+
+## Chaining Middlewares
+
+Middlewares are useful tools and often one is not enough. If we want to add more of these middlewares we can keep on wrapping our router with our middlewares.
+
+For example
+
+```go
+...SomeOtherMiddlerware(OtherMiddlerWare(Logger(r)))
+```
+
+There is couple of other ways to do this.
+
+```go
+// Chain applies middlewares to a http.HandlerFunc
+func Chain(f http.Handler, middlewares ...func(next http.Handler) http.Handler) http.Handler {
+  for _, m := range middlewares {
+    f = m(f)
+  }
+  return f
+}
+```
+
+Then we can use our middlewares like this,
+
+```go
+Chain(r, Logger, OtherMiddlerWare, SomeOtherMiddlerware, ...)
+```
+
+This in my opinion is a bit cleaner implementation.
+
+In gorilla mux we have another option to do this.
+
+Router has a method  `Use` that takes an array of Middlewares. This is useful to add middlewares to subrouters.
