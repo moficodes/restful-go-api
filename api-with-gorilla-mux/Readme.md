@@ -11,6 +11,7 @@ git checkout origin/gorilla-mux-03
 ```
 
 If you are not already in the folder
+
 ```bash
 cd api-with-gorilla-mux
 ```
@@ -47,8 +48,8 @@ For one, your router will almost never be your bottleneck, in an application whe
 With net/http we were sending all Http Verb request to the route and handling each type in the same function. With mux we can specify the http method for each our route.
 
 ```go
-  r.HandleFunc("/user", s.getUser).Methods(http.MethodGet)
-  r.HandleFunc("/user", s.updateUser).Methods(http.MethodPut)
+  api.HandleFunc("/users", getAllUsers).Methods(http.MethodGet)
+  api.HandleFunc("/users", getAllUsers).Methods(http.MethodGet)
 ```
 
 We will also need to create corresoponding methods for each routes. and extract 
@@ -56,11 +57,7 @@ We will also need to create corresoponding methods for each routes. and extract
 With these our api should behave exactly the same.
 
 ```bash
-curl localhost:7999/user 
-```
-
-```bash
-curl -X PUT -d '{"username":"mofi","email":"mofi@gmail.com","age":27}' localhost:7999/user
+curl localhost:7999/api/v1/users
 ```
 
 ## Path Params
@@ -72,7 +69,7 @@ For this part we start with a more complex example. Lets imagine a application t
 We have HandlerFunc for returing all users, instructors and courses. As well as getting individual user, course or instructor. And thats the route we are interested in here.
 
 ```go
-  r.HandleFunc("/users/{id}", getUserByID).Methods(http.MethodGet)
+  api.HandleFunc("/users/{id}", getUserByID).Methods(http.MethodGet)
 ```
 
 In this route we have a path param `{id}` which we will access in the `getUserByID` function. 
@@ -136,3 +133,21 @@ r.HandleFunc("/courses", getCoursesWithInstructorAndAttendee).
 This route will only match request with query `instructor` and `attendee` and the value type integer. Anything else will match the other route with the same path. Or return 404 if nothing else matches.
 
 >The route matching is top to bottom read operation. If you have more specific route you should put them above otherwise a generic route might catch and respond.
+
+## Sub Router
+
+So far we have been adding all our routes at the top level of our hostname. i.e. `localhost:7999/<route>`. But there are times when it is desired to have routes that are grouped together based on some criteria. For example we might want all our authentication routes grouped together under `/auth` or we could want to version our api with `/api/v1`. With a sub-router it is possible to apply rules and logic to a group of routes instead of applying these rules individually.
+
+To create a sub-router 
+
+```go
+  api := r.PathPrefix("/api/v1").Subrouter()
+```
+
+We can then treat `api` as if it were a Router and add new routes to it. Any route added to this subrouter will be prefixed with `/api/v1` so the path `/users` become `/api/v1/users`. 
+
+We can still test that all our routes work as expected.
+
+```bash
+curl localhost:7999/api/v1/instructors
+```
