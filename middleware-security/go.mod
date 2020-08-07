@@ -1,4 +1,4 @@
-module github.com/moficodes/restful-go-api/gorillamux
+module github.com/moficodes/restful-go-api/middleware
 
 go 1.14
 

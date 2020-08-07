@@ -296,6 +296,13 @@ func getInstructorByID(w http.ResponseWriter, r *http.Request) {
 	e.Encode(data)
 }
 
+func Logger(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		log.Println(r.URL)
+		next.ServeHTTP(w, r)
+	})
+}
+
 func main() {
 	s := &server{Routes: make([]string, 0)}
 	r := mux.NewRouter()
@@ -331,5 +338,5 @@ func main() {
 	})
 	log.Println("available routes: ", s.Routes)
 	// instead of using the default handler that comes with net/http we use the mux router from gorilla mux
-	log.Fatal(http.ListenAndServe(":"+port, r))
+	log.Fatal(http.ListenAndServe(":"+port, Logger(r)))
 }
