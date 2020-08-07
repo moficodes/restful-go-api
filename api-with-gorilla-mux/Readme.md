@@ -11,6 +11,7 @@ git checkout origin/gorilla-mux-03
 ```
 
 If you are not already in the folder
+
 ```bash
 cd api-with-gorilla-mux
 ```
@@ -47,25 +48,22 @@ For one, your router will almost never be your bottleneck, in an application whe
 With net/http we were sending all Http Verb request to the route and handling each type in the same function. With mux we can specify the http method for each our route.
 
 ```go
-  r.HandleFunc("/user", s.getUser).Methods(http.MethodGet)
-  r.HandleFunc("/user", s.updateUser).Methods(http.MethodPut)
+  r.HandleFunc("/users", getAllUsers).Methods(http.MethodGet)
+  r.HandleFunc("/courses", getAllCourses).Methods(http.MethodGet)
+  r.HandleFunc("/instructors", getAllInstructors).Methods(http.MethodGet)
 ```
 
-We will also need to create corresoponding methods for each routes. and extract 
+We will also need to create corresoponding methods for each routes. 
 
 With these our api should behave exactly the same.
 
 ```bash
-curl localhost:7999/user 
-```
-
-```bash
-curl -X PUT -d '{"username":"mofi","email":"mofi@gmail.com","age":27}' localhost:7999/user
+curl localhost:7999/users
 ```
 
 ## Path Params
 
-With net/http we saw a simple example of how we can do path params. We gorilla mux this becomes significantly easier (this is also where the libraries and framework differ in implementations). 
+With net/http we saw a simple example of how we can do path params. We gorilla mux this becomes significantly easier (this is also where the libraries and framework differ in implementations).
 
 For this part we start with a more complex example. Lets imagine a application that is keeping track of courses, instructors and attendees to these courses.
 
@@ -119,5 +117,4 @@ With this we get access the the `map[string][]string`. Some applications mandate
   interests, ok := query["interest"]
 ```
 
-In go on map data access we get a second value which says if the value was there or not. If there is no query with the key we just return the whole result. In this example we are treating the queries as an `and` relation. If we query for `NodeJS` and `AI` all the users with interests in both of the topic will be returned. It is also possible to treat this like a or relation albeit not that common. 
-
+In go on map data access we get a second value which says if the value was there or not. If there is no query with the key we just return the whole result. In this example we are treating the queries as an `and` relation. If we query for `NodeJS` and `AI` all the users with interests in both of the topic will be returned. It is also possible to treat this like a or relation albeit not that common.
