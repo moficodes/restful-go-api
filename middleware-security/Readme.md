@@ -66,3 +66,35 @@ This in my opinion is a bit cleaner implementation.
 In gorilla mux we have another option to do this.
 
 Router has a method  `Use` that takes an array of Middlewares. This is useful to add middlewares to subrouters.
+
+## Mux Handlers
+
+Gorilla mux has a module named handlers. Its a collection of useful middleware handlers for gorilla mux. 
+
+We can make use of one of these middlewares to make a better logger for our routes.
+
+```go
+func MuxLogger(next http.Handler) http.Handler {
+  return handlers.LoggingHandler(os.Stdout, next)
+}
+```
+
+We add this middleware in our chain
+
+```go
+  log.Fatal(http.ListenAndServe(":"+port, Chain(r, MuxLogger, Logger)))
+```
+
+And the output we get is,
+
+```bash
+2020/08/07 03:44:59 /api/v1/users
+2020/08/07 03:44:59 /api/v1/users 901.821µs
+::1 - - [07/Aug/2020:03:44:59 -0400] "GET /api/v1/users HTTP/1.1" 200 96107
+```
+
+The first line comes from our `Logger` middleware. 
+The second line is from the `Time` middleware.
+And finally the third line is from the `MuxLogger` that is using the `LoggingHandler` middleware from mux.
+
+>The mux Logger middleware gets the http status code of the response being sent out. If we wanted, we could have implemented something like that ourselves. We would need to use a http hijacker and a custop response writer.
