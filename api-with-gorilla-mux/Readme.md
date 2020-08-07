@@ -11,6 +11,7 @@ git checkout origin/gorilla-mux-02
 ```
 
 If you are not already in the folder
+
 ```bash
 cd api-with-gorilla-mux
 ```
@@ -47,23 +48,21 @@ For one, your router will almost never be your bottleneck, in an application whe
 With net/http we were sending all Http Verb request to the route and handling each type in the same function. With mux we can specify the http method for each our route.
 
 ```go
-  r.HandleFunc("/user", s.getUser).Methods(http.MethodGet)
-  r.HandleFunc("/user", s.updateUser).Methods(http.MethodPut)
+  r.HandleFunc("/users", getAllUsers).Methods(http.MethodGet)
+  r.HandleFunc("/courses", getAllCourses).Methods(http.MethodGet)
+  r.HandleFunc("/instructors", getAllInstructors).Methods(http.MethodGet)
 ```
 
-We will also need to create corresoponding methods for each routes. and extract 
+We will also need to create corresoponding methods for each routes.
 
 With these our api should behave exactly the same.
 
 ```bash
-curl localhost:7999/user 
-```
-
-```bash
-curl -X PUT -d '{"username":"mofi","email":"mofi@gmail.com","age":27}' localhost:7999/user
+curl localhost:7999/users
 ```
 
 ## Path Params
+
 With net/http we saw a simple example of how we can do path params. We gorilla mux this becomes significantly easier (this is also where the libraries and framework differ in implementations). 
 
 For this part we start with a more complex example. Lets imagine a application that is keeping track of courses, instructors and attendees to these courses.
@@ -74,7 +73,7 @@ We have HandlerFunc for returing all users, instructors and courses. As well as 
   r.HandleFunc("/users/{id}", getUserByID).Methods(http.MethodGet)
 ```
 
-In this route we have a path param `{id}` which we will access in the `getUserByID` function. 
+In this route we have a path param `{id}` which we will access in the `getUserByID` function.
 
 ```go
   pathParams := mux.Vars(r)
@@ -96,4 +95,3 @@ if val, ok := pathParams["id"]; ok {
 Sending the error message and setting the status code helps the consumer of this api to take appropriate actions.
 
 Once we hace access to the id we can search our list for the appropirate resource. In our case its looping through an array. In most cases it would be querying some sort of database.
-
