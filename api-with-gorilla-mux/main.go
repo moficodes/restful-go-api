@@ -299,22 +299,24 @@ func getInstructorByID(w http.ResponseWriter, r *http.Request) {
 func main() {
 	s := &server{Routes: make([]string, 0)}
 	r := mux.NewRouter()
+
 	r.Handle("/", s)
+	api := r.PathPrefix("/api/v1").Subrouter()
 
-	r.HandleFunc("/users", getAllUsers).Methods(http.MethodGet)
+	api.HandleFunc("/users", getAllUsers).Methods(http.MethodGet)
 
-	r.HandleFunc("/courses", getCoursesWithInstructorAndAttendee).
+	api.HandleFunc("/courses", getCoursesWithInstructorAndAttendee).
 		Queries("instructor", "{instructor:[0-9]+}", "attendee", "{attendee:[0-9]+}").
 		Methods(http.MethodGet)
 
-	r.HandleFunc("/courses", getAllCourses).Methods(http.MethodGet)
-	r.HandleFunc("/instructors", getAllInstructors).Methods(http.MethodGet)
+	api.HandleFunc("/courses", getAllCourses).Methods(http.MethodGet)
+	api.HandleFunc("/instructors", getAllInstructors).Methods(http.MethodGet)
 
 	// in gorilla mux we can name path parameters
 	// the library will put them in an key,val map for us
-	r.HandleFunc("/users/{id}", getUserByID).Methods(http.MethodGet)
-	r.HandleFunc("/courses/{id}", getUserByID).Methods(http.MethodGet)
-	r.HandleFunc("/instructors/{id}", getUserByID).Methods(http.MethodGet)
+	api.HandleFunc("/users/{id}", getUserByID).Methods(http.MethodGet)
+	api.HandleFunc("/courses/{id}", getUserByID).Methods(http.MethodGet)
+	api.HandleFunc("/instructors/{id}", getUserByID).Methods(http.MethodGet)
 
 	port := "7999"
 	log.Println("starting web server on port", port)
