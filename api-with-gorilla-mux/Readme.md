@@ -49,7 +49,6 @@ With net/http we were sending all Http Verb request to the route and handling ea
 
 ```go
   api.HandleFunc("/users", getAllUsers).Methods(http.MethodGet)
-  api.HandleFunc("/users", getAllUsers).Methods(http.MethodGet)
 ```
 
 We will also need to create corresoponding methods for each routes. and extract 
