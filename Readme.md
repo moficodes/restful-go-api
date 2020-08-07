@@ -29,3 +29,8 @@ At each level of the workshop the branch should be working code. If it is not I 
     - [Query Parameter](https://github.com/moficodes/restful-go-api/tree/gorilla-mux-03/api-with-gorilla-mux)
     - [Match Query](https://github.com/moficodes/restful-go-api/tree/gorilla-mux-04/api-with-gorilla-mux)
     - [Sub Router](https://github.com/moficodes/restful-go-api/tree/gorilla-mux-05/api-with-gorilla-mux)
+
+3. Middleware and Security
+
+    - [Middleware](https://github.com/moficodes/restful-go-api/tree/middleware-security-01/middleware-security)
+    - [Chaining Middlewares]()
