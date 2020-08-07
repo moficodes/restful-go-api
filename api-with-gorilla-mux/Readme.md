@@ -48,11 +48,17 @@ For one, your router will almost never be your bottleneck, in an application whe
 With net/http we were sending all Http Verb request to the route and handling each type in the same function. With mux we can specify the http method for each our route.
 
 ```go
-  api.HandleFunc("/users", getAllUsers).Methods(http.MethodGet)
-  api.HandleFunc("/users", getAllUsers).Methods(http.MethodGet)
+  r.HandleFunc("/users", getAllUsers).Methods(http.MethodGet)
+
+  r.HandleFunc("/courses", getCoursesWithInstructorAndAttendee).
+    Queries("instructor", "{instructor:[0-9]+}", "attendee", "{attendee:[0-9]+}").
+    Methods(http.MethodGet)
+
+  r.HandleFunc("/courses", getAllCourses).Methods(http.MethodGet)
+  r.HandleFunc("/instructors", getAllInstructors).Methods(http.MethodGet)
 ```
 
-We will also need to create corresoponding methods for each routes. and extract 
+We will also need to create corresoponding methods for each routes.
 
 With these our api should behave exactly the same.
 
