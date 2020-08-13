@@ -38,4 +38,4 @@ At each level of the workshop the branch should be working code. If it is not I 
     - [JWT Auth](https://github.com/moficodes/restful-go-api/tree/middleware-security-04/middleware-security)
 
 4. Project Structure
-    - [Common Project Structures for Go application]()
+    - [Common Project Structures for Go application](https://github.com/moficodes/restful-go-api/tree/project-structure-01/project-structure)
