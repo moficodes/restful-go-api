@@ -38,4 +38,22 @@ Go has a built-in package [httptest](https://golang.org/pkg/net/http/httptest) f
 
 Look at `courses_test.go` for some examples of http tests in go. I leave writing test for the other handlers as an exercise you you.
 
+## Running the Test
+
+To run the code in this section
+
+```bash
+git checkout origin/testing-benchmarking-01
+```
+
+If you are not already in the folder
+
+```bash
+cd testing-benchmark
+```
+
+```bash
+go test -v ./...
+```
+
 
