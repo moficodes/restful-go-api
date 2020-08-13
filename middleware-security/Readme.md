@@ -2,6 +2,28 @@
 
 In this section we will be talking about middleware and security. The topic may seem a little unrelated but implementation wise they go hand in had.
 
+## Try it out
+
+To run the code in this section
+
+```bash
+git checkout origin/middleware-security-01
+```
+
+If you are not already in the folder
+
+```bash
+cd middleware-security
+```
+
+```bash
+go run main.go
+```
+
+```bash
+curl localhost:7999
+```
+
 ## Middleware
 
 Middleware is a function that wraps our handler. Thats all. 
