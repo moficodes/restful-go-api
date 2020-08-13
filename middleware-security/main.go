@@ -1,7 +1,9 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -10,9 +12,13 @@ import (
 	"strings"
 	"time"
 
+	"github.com/dgrijalva/jwt-go"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 )
+
+// ContextKey is not primitive type key for context
+type ContextKey string
 
 var (
 	users       []User
@@ -298,6 +304,19 @@ func getInstructorByID(w http.ResponseWriter, r *http.Request) {
 	e.Encode(data)
 }
 
+func testHandler(w http.ResponseWriter, r *http.Request) {
+	data := r.Context().Value(ContextKey("props")).(jwt.MapClaims)
+
+	name, ok := data["name"]
+	if !ok {
+		w.WriteHeader(http.StatusUnauthorized)
+		w.Write([]byte(`{"error": "not authorized"}`))
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte(fmt.Sprintf("{\"message\": \"hello %v\"}", name)))
+}
+
 func Chain(f http.Handler,
 	middlewares ...func(next http.Handler) http.Handler) http.Handler {
 	for _, m := range middlewares {
@@ -325,12 +344,57 @@ func Time(next http.Handler) http.Handler {
 	})
 }
 
+func JWTAuth(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		authorization := r.Header.Get("Authorization")
+		// auth token have the structure `bearer <token>`
+		// so we split it on the ` ` (space character)
+		splitToken := strings.Split(authorization, " ")
+		// if we end up with a array of size 2 we have the token as the
+		// 2nd item in the array
+		if len(splitToken) != 2 {
+			// we got something different
+			w.WriteHeader(http.StatusUnauthorized)
+			w.Write([]byte(`{"error": "not authorized"}`))
+			return
+		}
+		// second item is our possible token
+		jwtToken := splitToken[1]
+		token, err := jwt.Parse(jwtToken, func(token *jwt.Token) (interface{}, error) {
+			if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+				return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
+			}
+			return []byte("very-secret"), nil
+		})
+
+		if err != nil {
+			// we got something different
+			w.WriteHeader(http.StatusUnauthorized)
+			w.Write([]byte(`{"error": "not authorized"}`))
+			return
+		}
+
+		if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
+			ctx := context.WithValue(r.Context(), ContextKey("props"), claims)
+			next.ServeHTTP(w, r.WithContext(ctx))
+		} else {
+			w.WriteHeader(http.StatusUnauthorized)
+			w.Write([]byte(`{"error": "not authorized"}`))
+		}
+
+	})
+}
+
 func main() {
 	s := &server{Routes: make([]string, 0)}
 	r := mux.NewRouter()
 
 	r.Handle("/", s)
 	api := r.PathPrefix("/api/v1").Subrouter()
+	auth := r.PathPrefix("/auth").Subrouter()
+	auth.Use(JWTAuth)
+	auth.HandleFunc("/test", testHandler)
+
 	api.Use(Time)
 
 	api.HandleFunc("/users", getAllUsers).Methods(http.MethodGet)
