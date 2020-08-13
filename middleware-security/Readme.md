@@ -7,13 +7,13 @@ In this section we will be talking about middleware and security. The topic may 
 To run the code in this section
 
 ```bash
-git checkout origin/gorilla-mux-05
+git checkout origin/middleware-security-04
 ```
 
 If you are not already in the folder
 
 ```bash
-cd api-with-gorilla-mux
+cd middleware-security
 ```
 
 ```bash
@@ -120,3 +120,43 @@ The second line is from the `Time` middleware.
 And finally the third line is from the `MuxLogger` that is using the `LoggingHandler` middleware from mux.
 
 >The mux Logger middleware gets the http status code of the response being sent out. If we wanted, we could have implemented something like that ourselves. We would need to use a http hijacker and a custop response writer.
+
+## JWT Authentication
+
+JSON Web Tokens are an open, industry standard [RFC 7519](https://tools.ietf.org/html/rfc7519) method for representing claims securely between two parties. It is very easy to verify JWT tokens in go.
+
+We make use of the very popular [jwt-go](https://godoc.org/github.com/dgrijalva/jwt-go#example-Parse--Hmac) library to validate a JWT Token. 
+
+In this example we will be validating a JWT token that we generate in [jwt.io](jwt.io) website. With a payload (feel free to use any name or even any other payload here)
+
+```json
+{
+  "name": "John Doe"
+}
+```
+
+And for secret we use a string `very-secret` (goes without saying this is a secret so generate a longer more random string for your application). this will generate us a jwt token. If you dont want to go throught the trouble to generate this yourself, you can use this.
+
+```
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9obiBEb2UifQ.wSzHi09b5o8aSjDHjlGxED9Cg-_-8T6lTWZjs6_Netg
+```
+
+We write a new function called `JWTAuth` which is a middleware. In this we check for the Header with key `Authorization`. There is no rule that says token should be sent in this manner. But this in convention and many apps will expect to get the token in this header. So its best practice to keep it there.
+
+We get the claim and attach it to the request context as extra data so we can get it in our handler when needed.
+
+In our `handlerFunc` we get the value from context and respond back with the users name.
+
+```bash
+curl -H "Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9obiBEb2UifQ.wSzHi09b5o8aSjDHjlGxED9Cg-_-8T6lTWZjs6_Netg" http://localhost:7999/auth/test
+```
+
+Our server should respond back with
+```json
+{
+  "message": "hello John Doe"
+}
+```
+
+
+
