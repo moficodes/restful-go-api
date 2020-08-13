@@ -7,7 +7,7 @@ In this section we will be talking about middleware and security. The topic may 
 To run the code in this section
 
 ```bash
-git checkout origin/middleware-security-04
+git checkout origin/middleware-security-03
 ```
 
 If you are not already in the folder
