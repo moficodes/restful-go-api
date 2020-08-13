@@ -7,13 +7,13 @@ In this section we will be talking about middleware and security. The topic may 
 To run the code in this section
 
 ```bash
-git checkout origin/gorilla-mux-05
+git checkout origin/middleware-security-04
 ```
 
 If you are not already in the folder
 
 ```bash
-cd api-with-gorilla-mux
+cd middleware-security
 ```
 
 ```bash
