@@ -10,6 +10,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 )
 
@@ -312,6 +313,10 @@ func Logger(next http.Handler) http.Handler {
 	})
 }
 
+func MuxLogger(next http.Handler) http.Handler {
+	return handlers.LoggingHandler(os.Stdout, next)
+}
+
 func Time(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		start := time.Now()
@@ -356,5 +361,5 @@ func main() {
 	})
 	log.Println("available routes: ", s.Routes)
 	// instead of using the default handler that comes with net/http we use the mux router from gorilla mux
-	log.Fatal(http.ListenAndServe(":"+port, Chain(r, Logger)))
+	log.Fatal(http.ListenAndServe(":"+port, Chain(r, MuxLogger, Logger)))
 }
