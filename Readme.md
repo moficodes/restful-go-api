@@ -39,3 +39,6 @@ At each level of the workshop the branch should be working code. If it is not I 
 
 4. Project Structure
     - [Common Project Structures for Go application](https://github.com/moficodes/restful-go-api/tree/project-structure-01/project-structure)
+
+5. Testing and Benchmarking
+    - [Unit Testing]()
