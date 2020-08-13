@@ -36,3 +36,6 @@ At each level of the workshop the branch should be working code. If it is not I 
     - [Chaining Middlewares](https://github.com/moficodes/restful-go-api/tree/middleware-security-02/middleware-security)
     - [Mux Handlers](https://github.com/moficodes/restful-go-api/tree/middleware-security-03/middleware-security)
     - [JWT Auth](https://github.com/moficodes/restful-go-api/tree/middleware-security-04/middleware-security)
+
+4. Project Structure
+    - [Common Project Structures for Go application](https://github.com/moficodes/restful-go-api/tree/project-structure-01/project-structure)
