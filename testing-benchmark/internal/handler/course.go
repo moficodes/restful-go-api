@@ -18,6 +18,9 @@ func init() {
 }
 
 func loadCourses(path string) {
+	if courses != nil {
+		return
+	}
 	if err := readContent(path, &courses); err != nil {
 		log.Println("Could not read courses data")
 	}
