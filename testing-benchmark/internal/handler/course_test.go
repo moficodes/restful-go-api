@@ -10,8 +10,11 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func TestGetAllCourses_success(t *testing.T) {
+func init() {
 	loadCourses("../../data/courses.json")
+}
+
+func TestGetAllCourses_success(t *testing.T) {
 	w := httptest.NewRecorder()
 	r := httptest.NewRequest(http.MethodGet, "/users", nil)
 
@@ -38,7 +41,6 @@ func TestGetAllCourses_success(t *testing.T) {
 }
 
 func TestGetAllCourses_server(t *testing.T) {
-	loadCourses("../../data/courses.json")
 	ts := httptest.NewServer(http.HandlerFunc(GetAllCourses))
 	defer ts.Close()
 
@@ -65,7 +67,6 @@ func TestGetAllCourses_server(t *testing.T) {
 }
 
 func TestGetCoursesByID_success(t *testing.T) {
-	loadCourses("../../data/courses.json")
 	w := httptest.NewRecorder()
 	r := httptest.NewRequest(http.MethodGet, "/courses/1", nil)
 
@@ -98,7 +99,6 @@ func TestGetCoursesByID_success(t *testing.T) {
 }
 
 func TestGetCoursesByID_failure(t *testing.T) {
-	loadCourses("../../data/courses.json")
 	w := httptest.NewRecorder()
 	r := httptest.NewRequest(http.MethodGet, "/courses/101", nil)
 
@@ -118,7 +118,6 @@ func TestGetCoursesByID_failure(t *testing.T) {
 }
 
 func TestGetCoursesWithInstructorAndAttendee_success(t *testing.T) {
-	loadCourses("../../data/courses.json")
 	w := httptest.NewRecorder()
 	r := httptest.NewRequest(http.MethodGet, "/?instructor=1&attendee=2", nil)
 
@@ -151,7 +150,6 @@ func TestGetCoursesWithInstructorAndAttendee_success(t *testing.T) {
 }
 
 func TestGetCoursesWithInstructorAndAttendee_server(t *testing.T) {
-	loadCourses("../../data/courses.json")
 	ts := httptest.NewServer(http.HandlerFunc(GetCoursesWithInstructorAndAttendee))
 	defer ts.Close()
 

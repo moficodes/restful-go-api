@@ -35,7 +35,7 @@ func main() {
 	// in gorilla mux we can name path parameters
 	// the library will put them in an key,val map for us
 	api.HandleFunc("/users/{id}", handler.GetUserByID).Methods(http.MethodGet)
-	api.HandleFunc("/courses/{id}", handler.GetCourseByID).Methods(http.MethodGet)
+	api.HandleFunc("/courses/{id}", handler.GetCoursesByID).Methods(http.MethodGet)
 	api.HandleFunc("/instructors/{id}", handler.GetInstructorByID).Methods(http.MethodGet)
 
 	port := "7999"
