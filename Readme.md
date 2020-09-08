@@ -24,21 +24,21 @@ At each level of the workshop the branch should be working code. If it is not I 
     - [Path Parameter](https://github.com/moficodes/restful-go-api/tree/standard-library-net-http-07/api-with-net-http#path-parameter)
   
 2. Gorilla Mux
-    - [Why Gorilla Mux](https://github.com/moficodes/restful-go-api/tree/gorilla-mux-01/api-with-gorilla-mux)
-    - [Path Parameter](https://github.com/moficodes/restful-go-api/tree/gorilla-mux-02/api-with-gorilla-mux)
-    - [Query Parameter](https://github.com/moficodes/restful-go-api/tree/gorilla-mux-03/api-with-gorilla-mux)
-    - [Match Query](https://github.com/moficodes/restful-go-api/tree/gorilla-mux-04/api-with-gorilla-mux)
-    - [Sub Router](https://github.com/moficodes/restful-go-api/tree/gorilla-mux-05/api-with-gorilla-mux)
+    - [Why Gorilla Mux](https://github.com/moficodes/restful-go-api/tree/gorilla-mux-01/api-with-gorilla-mux#why-gorilla-mux)
+    - [Path Parameter](https://github.com/moficodes/restful-go-api/tree/gorilla-mux-02/api-with-gorilla-mux#path-params)
+    - [Query Parameter](https://github.com/moficodes/restful-go-api/tree/gorilla-mux-03/api-with-gorilla-mux#query-parameters)
+    - [Match Query](https://github.com/moficodes/restful-go-api/tree/gorilla-mux-04/api-with-gorilla-mux#match-query)
+    - [Sub Router](https://github.com/moficodes/restful-go-api/tree/gorilla-mux-05/api-with-gorilla-mux#sub-router)
 
 3. Middleware and Security
 
-    - [Middleware](https://github.com/moficodes/restful-go-api/tree/middleware-security-01/middleware-security)
-    - [Chaining Middlewares](https://github.com/moficodes/restful-go-api/tree/middleware-security-02/middleware-security)
-    - [Mux Handlers](https://github.com/moficodes/restful-go-api/tree/middleware-security-03/middleware-security)
-    - [JWT Auth](https://github.com/moficodes/restful-go-api/tree/middleware-security-04/middleware-security)
+    - [Middleware](https://github.com/moficodes/restful-go-api/tree/middleware-security-01/middleware-security#middleware)
+    - [Chaining Middlewares](https://github.com/moficodes/restful-go-api/tree/middleware-security-02/middleware-security#chaining-middlewares)
+    - [Mux Handlers](https://github.com/moficodes/restful-go-api/tree/middleware-security-03/middleware-security#mux-handlers)
+    - [JWT Auth](https://github.com/moficodes/restful-go-api/tree/middleware-security-04/middleware-security#jwt-authentication)
 
 4. Project Structure
     - [Common Project Structures for Go application](https://github.com/moficodes/restful-go-api/tree/project-structure-01/project-structure)
 
 5. Testing and Benchmarking
-    - [Unit Testing]()
+    - [Unit Testing](https://github.com/moficodes/restful-go-api/tree/testing-benchmarking-01/testing-benchmark)
