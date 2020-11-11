@@ -65,7 +65,7 @@ Your output would looks somehting like this
 ## HTTP Verbs
 In the previous example we had a method called `getUser`. It is pretty clear it is a GET operation. But if you were to make a request like
 ```
-curl -x POST "localhost:7999/user
+curl -x POST localhost:7999/user
 ```
 You would still see the same output. 
 
