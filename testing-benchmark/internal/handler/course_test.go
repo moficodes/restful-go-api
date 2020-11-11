@@ -16,7 +16,7 @@ func init() {
 
 func TestGetAllCourses_success(t *testing.T) {
 	w := httptest.NewRecorder()
-	r := httptest.NewRequest(http.MethodGet, "/users", nil)
+	r := httptest.NewRequest(http.MethodGet, "/courses", nil)
 
 	GetAllCourses(w, r)
 	resp := w.Result()
