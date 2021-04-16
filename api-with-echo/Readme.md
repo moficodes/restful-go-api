@@ -77,3 +77,21 @@ We can do the same thing for path Parameters too.
 ```bash
 curl localhost:7999/instructors/1
 ```
+
+## Group
+
+So far we have been adding all our routes at the top level of our hostname. i.e. `localhost:7999/<route>`. But there are times when it is desired to have routes that are grouped together based on some criteria. For example we might want all our authentication routes grouped together under `/auth` or we could want to version our api with `/api/v1`. With a sub-router it is possible to apply rules and logic to a group of routes instead of applying these rules individually.
+
+To create a group
+
+```go
+    api := e.Group("api/v1")
+``` 
+
+We can then treat `api` as if it were a instance of echo and add new routes to it. Any route added to this subrouter will be prefixed with `/api/v1` so the path `/users` become `/api/v1/users`.
+
+We can still test that all our routes work as expected.
+
+```bash
+curl localhost:7999/api/v1/instructors
+```

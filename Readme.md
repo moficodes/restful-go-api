@@ -32,19 +32,20 @@ At each level of the workshop the branch should be working code. If it is not I 
    
    b. Echo
    - [Why Echo](https://github.com/moficodes/restful-go-api/tree/echo-01/api-with-echo#why-echo)
-   - [Binding Parameters](https://github.com/moficodes/restful-go-api/tree/echo-02/api-with-echo#binding-parameters)   
+   - [Binding Parameters](https://github.com/moficodes/restful-go-api/tree/echo-02/api-with-echo#binding-parameters)
+   - [Sub Router / Groups](https://github.com/moficodes/restful-go-api/tree/echo-03/api-with-echo#group)
    
-4. Middleware and Security
+3. Middleware and Security
 
     - [Middleware](https://github.com/moficodes/restful-go-api/tree/middleware-security-01/middleware-security#middleware)
     - [Chaining Middlewares](https://github.com/moficodes/restful-go-api/tree/middleware-security-02/middleware-security#chaining-middlewares)
     - [Mux Handlers](https://github.com/moficodes/restful-go-api/tree/middleware-security-03/middleware-security#mux-handlers)
     - [JWT Auth](https://github.com/moficodes/restful-go-api/tree/middleware-security-04/middleware-security#jwt-authentication)
 
-5. Project Structure
+4. Project Structure
     - [Common Project Structures for Go application](https://github.com/moficodes/restful-go-api/tree/project-structure-01/project-structure)
 
-6. Testing and Benchmarking
+5. Testing and Benchmarking
     - [Unit Testing](https://github.com/moficodes/restful-go-api/tree/testing-benchmarking-01/testing-benchmark)
 
 
