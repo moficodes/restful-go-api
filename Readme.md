@@ -32,7 +32,8 @@ At each level of the workshop the branch should be working code. If it is not I 
    
    b. Echo
    - [Why Echo](https://github.com/moficodes/restful-go-api/tree/echo-01/api-with-echo#why-echo)
-      
+   - [Binding Parameters](https://github.com/moficodes/restful-go-api/tree/echo-02/api-with-echo#binding-parameters)   
+   
 4. Middleware and Security
 
     - [Middleware](https://github.com/moficodes/restful-go-api/tree/middleware-security-01/middleware-security#middleware)
