@@ -23,22 +23,28 @@ At each level of the workshop the branch should be working code. If it is not I 
     - [Handler vs HandlerFunc vs *HandlerMethod](https://github.com/moficodes/restful-go-api/tree/standard-library-net-http-06/api-with-net-http#handler-vs-handlerfunc-vs-handlermethod)
     - [Path Parameter](https://github.com/moficodes/restful-go-api/tree/standard-library-net-http-07/api-with-net-http#path-parameter)
   
-2. Gorilla Mux
+2. a. Gorilla Mux
     - [Why Gorilla Mux](https://github.com/moficodes/restful-go-api/tree/gorilla-mux-01/api-with-gorilla-mux#why-gorilla-mux)
     - [Path Parameter](https://github.com/moficodes/restful-go-api/tree/gorilla-mux-02/api-with-gorilla-mux#path-params)
     - [Query Parameter](https://github.com/moficodes/restful-go-api/tree/gorilla-mux-03/api-with-gorilla-mux#query-parameters)
     - [Match Query](https://github.com/moficodes/restful-go-api/tree/gorilla-mux-04/api-with-gorilla-mux#match-query)
     - [Sub Router](https://github.com/moficodes/restful-go-api/tree/gorilla-mux-05/api-with-gorilla-mux#sub-router)
-
-3. Middleware and Security
+   
+   b. Echo
+   - [Why Echo](https://github.com/moficodes/restful-go-api/tree/echo-01/api-with-echo#why-echo)
+      
+4. Middleware and Security
 
     - [Middleware](https://github.com/moficodes/restful-go-api/tree/middleware-security-01/middleware-security#middleware)
     - [Chaining Middlewares](https://github.com/moficodes/restful-go-api/tree/middleware-security-02/middleware-security#chaining-middlewares)
     - [Mux Handlers](https://github.com/moficodes/restful-go-api/tree/middleware-security-03/middleware-security#mux-handlers)
     - [JWT Auth](https://github.com/moficodes/restful-go-api/tree/middleware-security-04/middleware-security#jwt-authentication)
 
-4. Project Structure
+5. Project Structure
     - [Common Project Structures for Go application](https://github.com/moficodes/restful-go-api/tree/project-structure-01/project-structure)
 
-5. Testing and Benchmarking
+6. Testing and Benchmarking
     - [Unit Testing](https://github.com/moficodes/restful-go-api/tree/testing-benchmarking-01/testing-benchmark)
+
+
+   
