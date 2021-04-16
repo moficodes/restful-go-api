@@ -227,13 +227,14 @@ func getInstructorByID(c echo.Context) error {
 
 func main() {
 	e := echo.New()
-	e.GET("/users", getAllUsers)
-	e.GET("/instructors", getAllInstructors)
-	e.GET("/courses", getAllCourses)
+	api := e.Group("/api/v1")
+	api.GET("/users", getAllUsers)
+	api.GET("/instructors", getAllInstructors)
+	api.GET("/courses", getAllCourses)
 
-	e.GET("/users/:id", getUserByID)
-	e.GET("/instructors/:id", getInstructorByID)
-	e.GET("/courses/:id", getCoursesByID)
+	api.GET("/users/:id", getUserByID)
+	api.GET("/instructors/:id", getInstructorByID)
+	api.GET("/courses/:id", getCoursesByID)
 	port := "7999"
 
 	e.Logger.Fatal(e.Start(":" + port))
