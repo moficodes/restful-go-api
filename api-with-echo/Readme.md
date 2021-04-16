@@ -48,27 +48,32 @@ Echo is more full featured compared to some of the routers in the list. It has m
 With net/http we were sending all Http Verb request to the route and handling each type in the same function. With echo we can specify the http method for each our route.
 
 ```go
-	e.GET("/", s.home)
-	e.GET("/user", s.getUser)
-	e.PUT("/user", s.updateUser)
+	e.GET("/users", getAllUsers)
+	e.GET("/instructors", getAllInstructors)
+	e.GET("/courses", getAllCourses)
 ```
 
-We will also need to create corresoponding methods for each routes.
-
-With these our api should behave exactly the same.
+We can curl for response
 
 ```bash
-curl localhost:7999/user
+curl localhost:7999/users
 ```
 
-We can update the user
+## Binding Parameters
 
-```bash
-curl -X PUT -H 'Content-Type: application/json' -d '{"username":"mofi","email":"mofi@gmail.com","age":27}' localhost:7999/user
+Echo lets us bind parametes from different sources (path param, query param, request body). We can still reach into the request inside `c` if we want to. But bind is a nice helper that can do type assertions and catch validation errors automatically.
+
+```go
+	if err := echo.QueryParamsBinder(c).
+		Strings("topics", &topics).
+		Int("instructor", &instructor).
+		Strings("attendee", &attendees).BindError(); err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, "incorrect usage of query param")		
+	}
 ```
 
-Then see the update was successful
+We can do the same thing for path Parameters too.
 
 ```bash
-curl localhost:7999/user
+curl localhost:7999/instructors/1
 ```
