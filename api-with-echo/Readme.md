@@ -7,7 +7,7 @@ Lets see how Echo solves those problem.
 ## Run the example
 
 ```bash
-git checkout origin/echo-01
+git checkout origin/echo-03
 ```
 
 If you are not already in the folder
@@ -21,7 +21,7 @@ go run main.go
 ```
 
 ```bash
-curl localhost:7999
+curl localhost:7999/api/v1/users
 ```
 
 ## Why Echo
