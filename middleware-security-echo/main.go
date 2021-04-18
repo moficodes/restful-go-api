@@ -225,8 +225,16 @@ func getInstructorByID(c echo.Context) error {
 	return c.JSON(http.StatusOK, data)
 }
 
+func Logger(next echo.HandlerFunc) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		log.Println(c.Request().URL)
+		return next(c)
+	}
+}
+
 func main() {
 	e := echo.New()
+	e.Use(Logger)
 	api := e.Group("/api/v1")
 	api.GET("/users", getAllUsers)
 	api.GET("/instructors", getAllInstructors)
