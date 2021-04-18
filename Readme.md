@@ -1,4 +1,5 @@
 # RESTful Go API
+
 This repo holds the code content for the RESTful GO API live trainging session.
 
 This content will continue to grow as I learn more and get your feedback.
@@ -6,7 +7,9 @@ This content will continue to grow as I learn more and get your feedback.
 If any section is not 100% clear open an issue. If you see anything that you can fix, create a PR.
 
 ## Structure
-In order to gradually build up the conent for optimal learning, I have decided to make use of git branches. Each branch name will have the format `<Topic>-01..n`.
+
+In order to gradually build up the conent for optimal learning, I have decided to make use of git branches. Each branch
+name will have the format `<Topic>-01..n`.
 
 Each topic will be in their own folder and will be a complete go project.
 
@@ -22,26 +25,27 @@ At each level of the workshop the branch should be working code. If it is not I 
     - [Request Body](https://github.com/moficodes/restful-go-api/tree/standard-library-net-http-05/api-with-net-http#rest-routes)
     - [Handler vs HandlerFunc vs *HandlerMethod](https://github.com/moficodes/restful-go-api/tree/standard-library-net-http-06/api-with-net-http#handler-vs-handlerfunc-vs-handlermethod)
     - [Path Parameter](https://github.com/moficodes/restful-go-api/tree/standard-library-net-http-07/api-with-net-http#path-parameter)
-  
+
 2. a. Gorilla Mux
     - [Why Gorilla Mux](https://github.com/moficodes/restful-go-api/tree/gorilla-mux-01/api-with-gorilla-mux#why-gorilla-mux)
     - [Path Parameter](https://github.com/moficodes/restful-go-api/tree/gorilla-mux-02/api-with-gorilla-mux#path-params)
     - [Query Parameter](https://github.com/moficodes/restful-go-api/tree/gorilla-mux-03/api-with-gorilla-mux#query-parameters)
     - [Match Query](https://github.com/moficodes/restful-go-api/tree/gorilla-mux-04/api-with-gorilla-mux#match-query)
     - [Sub Router](https://github.com/moficodes/restful-go-api/tree/gorilla-mux-05/api-with-gorilla-mux#sub-router)
-   
-   b. Echo
-   - [Why Echo](https://github.com/moficodes/restful-go-api/tree/echo-01/api-with-echo#why-echo)
-   - [Binding Parameters](https://github.com/moficodes/restful-go-api/tree/echo-02/api-with-echo#binding-parameters)
-   - [Sub Router / Groups](https://github.com/moficodes/restful-go-api/tree/echo-03/api-with-echo#group)
-   
-3. Middleware and Security
 
+   b. Echo
+    - [Why Echo](https://github.com/moficodes/restful-go-api/tree/echo-01/api-with-echo#why-echo)
+    - [Binding Parameters](https://github.com/moficodes/restful-go-api/tree/echo-02/api-with-echo#binding-parameters)
+    - [Sub Router / Groups](https://github.com/moficodes/restful-go-api/tree/echo-03/api-with-echo#group)
+
+3. a. Middleware and Security with Gorilla Mux
     - [Middleware](https://github.com/moficodes/restful-go-api/tree/middleware-security-01/middleware-security#middleware)
     - [Chaining Middlewares](https://github.com/moficodes/restful-go-api/tree/middleware-security-02/middleware-security#chaining-middlewares)
     - [Mux Handlers](https://github.com/moficodes/restful-go-api/tree/middleware-security-03/middleware-security#mux-handlers)
     - [JWT Auth](https://github.com/moficodes/restful-go-api/tree/middleware-security-04/middleware-security#jwt-authentication)
 
+   b. Middleware and Security with Echo
+    - [Middleware](https://github.com/moficodes/restful-go-api/tree/middleware-echo-01/middleware-security-echo#middleware)
 4. Project Structure
     - [Common Project Structures for Go application](https://github.com/moficodes/restful-go-api/tree/project-structure-01/project-structure)
 
