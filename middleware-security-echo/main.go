@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -9,6 +10,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/dgrijalva/jwt-go"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
@@ -20,6 +22,14 @@ var (
 )
 
 type server struct{}
+
+type CustomContext struct {
+	echo.Context
+	Claims jwt.MapClaims
+}
+type Message struct {
+	Data string `json:"data"`
+}
 
 // User represent one user of our service
 type User struct {
@@ -240,6 +250,54 @@ func Chain(h echo.HandlerFunc, middleware ...func(echo.HandlerFunc) echo.Handler
 	return h
 }
 
+func authenticated(c echo.Context) error {
+	cc := c.(*CustomContext)
+	_name, ok := cc.Claims["name"]
+	if !ok {
+		echo.NewHTTPError(http.StatusUnauthorized, "malformed jwt")
+	}
+
+	name := fmt.Sprintf("%v", _name)
+
+	return c.JSON(http.StatusOK, Message{Data: name})
+}
+
+func jwtMW(next echo.HandlerFunc) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		authorization := c.Request().Header.Get("Authorization")
+		// auth token have the structure `bearer <token>`
+		// so we split it on the ` ` (space character)
+		splitToken := strings.Split(authorization, " ")
+		// if we end up with a array of size 2 we have the token as the
+		// 2nd item in the array
+		if len(splitToken) != 2 {
+			// we got something different
+			return echo.NewHTTPError(http.StatusUnauthorized, "no valid token found")
+		}
+		// second item is our possible token
+		jwtToken := splitToken[1]
+		token, err := jwt.Parse(jwtToken, func(token *jwt.Token) (interface{}, error) {
+			if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+				return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
+			}
+			return []byte("very-secret"), nil
+		})
+
+		if err != nil {
+			// we got something different
+			return echo.NewHTTPError(http.StatusUnauthorized, "unauthorized")
+		}
+
+		if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
+			cc := &CustomContext{c, claims}
+			return next(cc)
+
+		} else {
+			return echo.NewHTTPError(http.StatusUnauthorized, "unauthorized")
+		}
+	}
+}
+
 func main() {
 	e := echo.New()
 	specialLogger := middleware.LoggerWithConfig(middleware.LoggerConfig{
@@ -247,6 +305,9 @@ func main() {
 	})
 	e.Use(Logger, specialLogger)
 
+	auth := e.Group("/auth")
+	auth.Use(jwtMW)
+	auth.GET("/test", authenticated)
 	api := e.Group("/api/v1")
 	_ = Chain(getAllUsers, Logger, specialLogger) // this would give us a new handler that we can use in place of any other handler
 	api.GET("/users", getAllUsers)
