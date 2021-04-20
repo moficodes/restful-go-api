@@ -10,6 +10,7 @@ import (
 	"strings"
 
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
 var (
@@ -232,10 +233,22 @@ func Logger(next echo.HandlerFunc) echo.HandlerFunc {
 	}
 }
 
+func Chain(h echo.HandlerFunc, middleware ...func(echo.HandlerFunc) echo.HandlerFunc) echo.HandlerFunc {
+	for _, m := range middleware {
+		h = m(h)
+	}
+	return h
+}
+
 func main() {
 	e := echo.New()
-	e.Use(Logger)
+	specialLogger := middleware.LoggerWithConfig(middleware.LoggerConfig{
+		Format: "time=${time_rfc3339} method=${method}, uri=${uri}, status=${status}, latency=${latency_human}, \n",
+	})
+	e.Use(Logger, specialLogger)
+
 	api := e.Group("/api/v1")
+	_ = Chain(getAllUsers, Logger, specialLogger) // this would give us a new handler that we can use in place of any other handler
 	api.GET("/users", getAllUsers)
 	api.GET("/instructors", getAllInstructors)
 	api.GET("/courses", getAllCourses)
