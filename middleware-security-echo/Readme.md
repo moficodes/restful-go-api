@@ -55,3 +55,24 @@ e.Use(Logger)
 ```
 
 On any request made to our server it will now print out the url of request.
+
+## Chaining Middleware
+
+`echo.Use` takes in a slice of middlewares we want to use and apply them in reverse order.
+
+We can also do it manually ourselves
+
+```go
+func Chain(h echo.HandlerFunc, middleware ...func(echo.HandlerFunc) echo.HandlerFunc) echo.HandlerFunc {
+	for _, m := range middleware {
+		h = m(h)
+	}
+	return h
+}
+```
+
+This is less flexible compared to what echo provides out of the box with `echo.Use`. 
+
+## Echo Middlewares
+
+Echo has a list of middlewares built in from the middleware package. This includes CORS, CSRF, JWT, Jaeger, Prometheus and many more. The logger middlerware we used in the last section is also a middleware from echo. You can find the full list at [echo docs](https://echo.labstack.com/middleware/)

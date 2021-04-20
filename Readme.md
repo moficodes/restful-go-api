@@ -46,6 +46,8 @@ At each level of the workshop the branch should be working code. If it is not I 
 
    b. Middleware and Security with Echo
     - [Middleware](https://github.com/moficodes/restful-go-api/tree/middleware-echo-01/middleware-security-echo#middleware)
+    - [Chaining & Echo Middlewares](https://github.com/moficodes/restful-go-api/tree/middleware-echo-02/middleware-security-echo#chaining-middleware)
+   
 4. Project Structure
     - [Common Project Structures for Go application](https://github.com/moficodes/restful-go-api/tree/project-structure-01/project-structure)
 
