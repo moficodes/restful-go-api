@@ -7,4 +7,9 @@ type DB interface {
 	GetCoursesByID(int) (*Course, error)
 	GetInstructorByID(int) (*Instructor, error)
 	GetUserByID(int) (*User, error)
+	GetCoursesForInstructor(int) ([]Course, error)
+	GetCoursesForUser(int) ([]Course, error)
+
+	CreateNewUser(*User) (int, error)
+	AddUserInterest(int, []string) (int, error)
 }

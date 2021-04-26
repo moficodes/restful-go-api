@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -31,6 +32,10 @@ func (h *Handler) GetInstructorByID(c echo.Context) error {
 	instructor, err := h.DB.GetInstructorByID(id)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, "error fetching data")
+	}
+
+	if instructor == nil {
+		return echo.NewHTTPError(http.StatusNotFound, fmt.Sprintf("instructor with id : %d not found", id))
 	}
 
 	return c.JSON(http.StatusOK, instructor)
