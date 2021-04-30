@@ -75,7 +75,7 @@ cd rest-api-database
 To load the data using psql.
 
 ```bash
-psql -h localhost -p 5432 -d postgres -f database/migration/dump.sql -U postgres
+psql -h localhost -p 5432 -d postgres -f database/migration/init_schema.up.sql -U postgres
 ```
 
 ```bash
@@ -86,3 +86,53 @@ go run cmd/web/main.go
 curl localhost:7999/api/v1/users/1
 ```
 
+# Testing
+
+One of the difficulty with using databases is that testing databases is fairly complex. If you want to test database insert and actually insert something in the production database that might make some people angry. On the other hand you want to have tests that can inform you of regressions. 
+
+Go interface allows us to go mock pretty easily. It is still not enough to test our sql queries. We can make use of containers to test on actual databases.
+
+In this example we use `dockertest` and `migrate` to load our data on a postgres database for testing. At the end of the database we tear down the database. 
+
+With `dockertest` we first create a pool. Then we start a postgres database with password. 
+
+```go
+	// uses a sensible default on windows (tcp/http) and linux/osx (socket)
+	pool, err := dockertest.NewPool("")
+	if err != nil {
+		log.Fatalf("Could not connect to docker: %s", err)
+	}
+
+	// pulls an image, creates a container based on it and runs it
+	resource, err := pool.RunWithOptions(&dockertest.RunOptions{
+		Repository: "postgres",
+		Tag:        "9.6",
+		Env: []string{
+			"POSTGRES_DB=postgres",
+			"POSTGRES_PASSWORD=password",
+		},
+	}, func(config *docker.HostConfig) {
+		// set AutoRemove to true so that stopped container goes away by itself
+		config.AutoRemove = true
+		config.RestartPolicy = docker.RestartPolicy{
+			Name: "no",
+		}
+	})
+```
+
+After that we run `migrate` to load our test data. 
+
+```go
+	mig, err := migrate.New("file://../../database/migration", fmt.Sprintf("postgresql://postgres:password@localhost:%s/postgres?sslmode=disable", resource.GetPort("5432/tcp")))
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	if err := mig.Up(); err != nil {
+		log.Fatalln(err)
+	}
+```
+
+Now when we run the tests we are testing against an actual database and running actual sql queries. 
+
+We can even do this in our CI infrastructure. Most CI platform gives us the ability to run docker containers. 

@@ -1,91 +1,120 @@
 package handler
 
-// func TestGetAllCourses_success(t *testing.T) {
-// 	w := httptest.NewRecorder()
-// 	r := httptest.NewRequest(http.MethodGet, "/courses", nil)
-// 	e := echo.New()
-// 	c := e.NewContext(r, w)
-// 	GetAllCourses(c)
-// 	resp := w.Result()
-// 	defer resp.Body.Close()
+import (
+	"encoding/json"
+	"errors"
+	"net/http"
+	"net/http/httptest"
+	"testing"
 
-// 	body, err := ioutil.ReadAll(resp.Body)
-// 	if err != nil {
-// 		t.Errorf("readAll err=%s; want nil", err)
-// 	}
-// 	var res []datasource.Course
-// 	err = json.Unmarshal(body, &res)
-// 	if err != nil {
-// 		t.Errorf("unmarshal err=%s; want nil", err)
-// 	}
+	"github.com/labstack/echo/v4"
+	"github.com/stretchr/testify/assert"
 
-// 	want := 100
-// 	got := len(res)
+	"github.com/moficodes/restful-go-api/database/internal/datasource"
+)
 
-// 	if err != nil {
-// 		t.Errorf("want=%d; got=%d", want, got)
-// 	}
-// }
+type mock struct {
+	users       []datasource.User
+	courses     []datasource.Course
+	instructors []datasource.Instructor
+}
 
-// func TestGetCoursesByID_success(t *testing.T) {
-// 	w := httptest.NewRecorder()
-// 	r := httptest.NewRequest(http.MethodGet, "/", nil)
-// 	e := echo.New()
+var (
+	course = datasource.Course{
+		ID:           1,
+		InstructorID: 1,
+		Name:         "Test Course",
+		Topics:       []string{"go"},
+		Attendees:    []int{1},
+	}
+)
 
-// 	c := e.NewContext(r, w)
-// 	c.SetPath("/courses/:id")
-// 	c.SetParamNames("id")
-// 	c.SetParamValues("1")
+func TestHandler_GetAllCourses(t *testing.T) {
+	m := &mock{courses: []datasource.Course{course}}
+	h := NewHandler(m)
+	e := echo.New()
+	r := httptest.NewRequest(http.MethodGet, "/api/v1/courses", nil)
+	w := httptest.NewRecorder()
+	c := e.NewContext(r, w)
 
-// 	GetCoursesByID(c)
+	if assert.NoError(t, h.GetAllCourses(c)) {
+		assert.Equal(t, http.StatusOK, w.Code)
+		var courses []datasource.Course
+		assert.NoError(t, json.Unmarshal(w.Body.Bytes(), &courses))
+		assert.Equal(t, course, courses[0])
+	}
+}
 
-// 	resp := w.Result()
-// 	defer resp.Body.Close()
+func TestHandler_GetCoursesByID_success(t *testing.T) {
+	m := &mock{courses: []datasource.Course{course}}
+	h := NewHandler(m)
+	e := echo.New()
+	r := httptest.NewRequest(http.MethodGet, "/api/v1/courses/1", nil)
+	w := httptest.NewRecorder()
+	c := e.NewContext(r, w)
+	c.SetPath("/api/v1/courses/:id")
+	c.SetParamNames("id")
+	c.SetParamValues("1")
 
-// 	body, err := ioutil.ReadAll(resp.Body)
-// 	if err != nil {
-// 		t.Errorf("readAll err=%s; want nil", err)
-// 	}
-// 	var res datasource.Course
-// 	err = json.Unmarshal(body, &res)
-// 	if err != nil {
-// 		t.Errorf("unmarshal err=%s; want nil", err)
-// 	}
+	if assert.NoError(t, h.GetCoursesByID(c)) {
+		assert.Equal(t, http.StatusOK, w.Code)
+		var course *datasource.Course
+		assert.NoError(t, json.Unmarshal(w.Body.Bytes(), &course))
+		assert.Equal(t, 1, course.ID)
+	}
+}
 
-// 	want := 1
-// 	got := res.ID
+func TestHandler_GetCoursesByID_failure(t *testing.T) {
+	m := &mock{courses: []datasource.Course{course}}
+	h := NewHandler(m)
+	e := echo.New()
+	r := httptest.NewRequest(http.MethodGet, "/api/v1/courses/5", nil)
+	w := httptest.NewRecorder()
+	c := e.NewContext(r, w)
+	c.SetPath("/api/v1/courses/:id")
+	c.SetParamNames("id")
+	c.SetParamValues("5")
 
-// 	if want != got {
-// 		t.Errorf("want=1; got=%d", got)
-// 	}
+	assert.Error(t, h.GetUserByID(c), "should return error")
+}
 
-// 	want = 201
-// 	got = w.Code
+func (m *mock) GetAllCourses() ([]datasource.Course, error) {
+	return m.courses, nil
+}
 
-// 	if want != got {
-// 		t.Errorf("want=%d; got=%d", want, got)
-// 	}
-// }
+func (m *mock) GetAllUsers() ([]datasource.User, error) {
+	return nil, nil
+}
 
-// func TestGetCoursesByID_failure(t *testing.T) {
-// 	w := httptest.NewRecorder()
-// 	r := httptest.NewRequest(http.MethodGet, "/", nil)
+func (m *mock) GetAllInstructors() ([]datasource.Instructor, error) {
+	return nil, nil
+}
 
-// 	e := echo.New()
+func (m *mock) GetCoursesByID(id int) (*datasource.Course, error) {
+	for _, course := range m.courses {
+		if course.ID == id {
+			return &course, nil
+		}
+	}
+	return nil, errors.New("bad stuff happened")
+}
+func (m *mock) GetInstructorByID(id int) (*datasource.Instructor, error) {
+	return nil, nil
+}
+func (m *mock) GetUserByID(id int) (*datasource.User, error) {
+	return nil, nil
+}
 
-// 	c := e.NewContext(r, w)
-// 	c.SetPath("/courses/:id")
-// 	c.SetParamNames("id")
-// 	c.SetParamValues("101")
-// 	err := GetCoursesByID(c)
-// 	he, ok := err.(*echo.HTTPError)
-// 	if !ok {
-// 		t.Error("should be http error")
-// 	}
+func (m *mock) GetCoursesForInstructor(id int) ([]datasource.Course, error) {
+	return nil, nil
+}
+func (m *mock) GetCoursesForUser(id int) ([]datasource.Course, error) {
+	return nil, nil
+}
 
-// 	want := 404
-// 	got := he.Code
-// 	if want != got {
-// 		t.Errorf("want=%d; got=%d", want, got)
-// 	}
-// }
+func (m *mock) CreateNewUser(*datasource.User) (int, error) {
+	return -1, nil
+}
+func (m *mock) AddUserInterest(id int, interests []string) (int, error) {
+	return -1, nil
+}
