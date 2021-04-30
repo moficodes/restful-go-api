@@ -1,67 +1,67 @@
 CREATE TABLE "Users" (
-  "id" SERIAL PRIMARY KEY,
-  "name" varchar,
-  "email" varchar,
-  "company" varchar,
-  "created_at" timestamp DEFAULT CURRENT_TIMESTAMP,
-  "updated_at" timestamp DEFAULT CURRENT_TIMESTAMP
+                         "id" SERIAL PRIMARY KEY,
+                         "name" varchar,
+                         "email" varchar,
+                         "company" varchar,
+                         "created_at" timestamp DEFAULT CURRENT_TIMESTAMP,
+                         "updated_at" timestamp DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE "UserInterest" (
-  "id" SERIAL PRIMARY KEY,
-  "userId" int,
-  "topic" VARCHAR,
-  "created_at" timestamp DEFAULT CURRENT_TIMESTAMP,
-  "updated_at" timestamp DEFAULT CURRENT_TIMESTAMP
+                                "id" SERIAL PRIMARY KEY,
+                                "userId" int,
+                                "topic" VARCHAR,
+                                "created_at" timestamp DEFAULT CURRENT_TIMESTAMP,
+                                "updated_at" timestamp DEFAULT CURRENT_TIMESTAMP
 );
 CREATE TABLE "Instructors" (
-  "id" SERIAL PRIMARY KEY,
-  "name" varchar,
-  "email" varchar,
-  "company" varchar,
-  "created_at" timestamp DEFAULT CURRENT_TIMESTAMP,
-  "updated_at" timestamp DEFAULT CURRENT_TIMESTAMP
+                               "id" SERIAL PRIMARY KEY,
+                               "name" varchar,
+                               "email" varchar,
+                               "company" varchar,
+                               "created_at" timestamp DEFAULT CURRENT_TIMESTAMP,
+                               "updated_at" timestamp DEFAULT CURRENT_TIMESTAMP
 );
 CREATE TABLE "InstructorExpertise" (
-  "id" SERIAL PRIMARY KEY,
-  "instructorId" int,
-  "topic" varchar,
-  "created_at" timestamp DEFAULT CURRENT_TIMESTAMP,
-  "updated_at" timestamp DEFAULT CURRENT_TIMESTAMP
+                                       "id" SERIAL PRIMARY KEY,
+                                       "instructorId" int,
+                                       "topic" varchar,
+                                       "created_at" timestamp DEFAULT CURRENT_TIMESTAMP,
+                                       "updated_at" timestamp DEFAULT CURRENT_TIMESTAMP
 );
 CREATE TABLE "Courses" (
-  "id" SERIAL PRIMARY KEY,
-  "instructorId" int,
-  "name" varchar,
-  "created_at" timestamp DEFAULT CURRENT_TIMESTAMP,
-  "updated_at" timestamp DEFAULT CURRENT_TIMESTAMP
+                           "id" SERIAL PRIMARY KEY,
+                           "instructorId" int,
+                           "name" varchar,
+                           "created_at" timestamp DEFAULT CURRENT_TIMESTAMP,
+                           "updated_at" timestamp DEFAULT CURRENT_TIMESTAMP
 );
 CREATE TABLE "CourseTopic" (
-  "id" SERIAL PRIMARY KEY,
-  "courseId" int,
-  "topic" varchar,
-  "created_at" timestamp DEFAULT CURRENT_TIMESTAMP,
-  "updated_at" timestamp DEFAULT CURRENT_TIMESTAMP
+                               "id" SERIAL PRIMARY KEY,
+                               "courseId" int,
+                               "topic" varchar,
+                               "created_at" timestamp DEFAULT CURRENT_TIMESTAMP,
+                               "updated_at" timestamp DEFAULT CURRENT_TIMESTAMP
 );
 CREATE TABLE "CourseAttendee" (
-  "id" SERIAL PRIMARY KEY,
-  "courseId" int,
-  "attendeeId" int,
-  "created_at" timestamp DEFAULT CURRENT_TIMESTAMP,
-  "updated_at" timestamp DEFAULT CURRENT_TIMESTAMP
+                                  "id" SERIAL PRIMARY KEY,
+                                  "courseId" int,
+                                  "attendeeId" int,
+                                  "created_at" timestamp DEFAULT CURRENT_TIMESTAMP,
+                                  "updated_at" timestamp DEFAULT CURRENT_TIMESTAMP
 );
 ALTER TABLE "UserInterest"
-ADD FOREIGN KEY ("userId") REFERENCES "Users" ("id");
+    ADD FOREIGN KEY ("userId") REFERENCES "Users" ("id");
 ALTER TABLE "InstructorExpertise"
-ADD FOREIGN KEY ("instructorId") REFERENCES "Instructors" ("id");
+    ADD FOREIGN KEY ("instructorId") REFERENCES "Instructors" ("id");
 ALTER TABLE "CourseAttendee"
-ADD FOREIGN KEY ("courseId") REFERENCES "Courses" ("id");
+    ADD FOREIGN KEY ("courseId") REFERENCES "Courses" ("id");
 ALTER TABLE "CourseAttendee"
-ADD FOREIGN KEY ("attendeeId") REFERENCES "Users" ("id");
+    ADD FOREIGN KEY ("attendeeId") REFERENCES "Users" ("id");
 ALTER TABLE "CourseTopic"
-ADD FOREIGN KEY ("courseId") REFERENCES "Courses" ("id");
+    ADD FOREIGN KEY ("courseId") REFERENCES "Courses" ("id");
 ALTER TABLE "Courses"
-ADD FOREIGN KEY ("instructorId") REFERENCES "Instructors" ("id");
+    ADD FOREIGN KEY ("instructorId") REFERENCES "Instructors" ("id");
 
 
 INSERT INTO "Instructors" ("name","email","company") VALUES ('Veronica Smith','Paige Cruz','Rich-Mccarty'),('Matthew Le','Angela Baxter','Harmon, Wong and Oneal'),('Benjamin Hammond','Patricia Greer','Dean-Mcpherson'),('Paul Baker','Jenna Alexander','Ryan, Blevins and Liu'),('Benjamin Davis','Regina Morrow','Burns LLC'),('Michael Klein','Robin Collier','Gray, Barber and Mack'),('Bianca Hill','William Bishop','Martin-Johnson'),('Cynthia Reyes','Eric Duke','Burns LLC'),('Jacob Manning','Molly Bell','Hayes, Thompson and Santana'),('Ashley Page','Christopher Glover','Brown, Hernandez and Osborne'),('Christopher Graves','Laura Brown','Hernandez, Bennett and Sanchez'),('Sonia Cobb','Krystal Bishop','Miller, Martin and Smith'),('Joseph Alexander','Beverly Browning','Fernandez PLC'),('Billy Perez','Kim Gutierrez','Chambers, West and Sanders'),('Melissa Ibarra','Dr. Robert Hart DDS','Robertson and Sons'),('Joseph Tran','Kelly Forbes','Conway, Henderson and Obrien'),('Roberto Moore','Keith Palmer','Lee and Sons'),('Charles Dixon','Craig Baker','Johnson Inc'),('Martha Turner','Brandon Neal','Rhodes-Armstrong'),('Kathryn Kennedy','Jack Robinson','Smith-Wheeler'),('Eric Nguyen','Michelle Santos','Kelly-Miller'),('Susan Walter','Kenneth Barnes','Collins-Wells'),('Thomas Wood','James Short','Patel, Jones and Chavez'),('Jon Harrison','Casey Brady','Baker-Higgins'),('Richard Silva','Ian White','Hooper LLC');

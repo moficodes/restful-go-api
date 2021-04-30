@@ -8,17 +8,6 @@ import (
 )
 
 func (h *Handler) GetAllCourses(c echo.Context) error {
-	topics := []string{}
-	attendees := []string{}
-	instructor := -1
-
-	if err := echo.QueryParamsBinder(c).
-		Strings("topic", &topics).
-		Int("instructor", &instructor).
-		Strings("attendee", &attendees).BindError(); err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, "incorrect usage of query param")
-	}
-
 	courses, err := h.DB.GetAllCourses()
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, "error fetching data")
