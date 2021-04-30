@@ -57,4 +57,4 @@ At each level of the workshop the branch should be working code. If it is not I 
    
 6. Database
    - [Postgres Database](https://github.com/moficodes/restful-go-api/tree/rest-api-database-01/rest-api-database#go--postgres)
-   - [Testing Database](https://github.com/moficodes/restful-go-api/tree/rest-api-database-01/rest-api-database#testing)
+   - [Testing Database](https://github.com/moficodes/restful-go-api/tree/rest-api-database-02/rest-api-database#testing)
