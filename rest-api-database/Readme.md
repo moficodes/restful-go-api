@@ -135,4 +135,4 @@ After that we run `migrate` to load our test data.
 
 Now when we run the tests we are testing against an actual database and running actual sql queries. 
 
-We can even do this in our CI infrastructure. Most CI platform gives us the ability to run docker containers. 
+We can even do this in our CI infrastructure. Most CI platform gives us the ability to run docker containers.
