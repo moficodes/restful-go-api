@@ -122,3 +122,19 @@ Luckily we have many great libraries and frameworks at our disposal.
 We will move on to gorilla/mux now.
 
 >The example used here does not follow REST Philosophy. We can have a longer discussion about why something is or isn't restful. The function is more of an action than a representation of some entity.
+
+## http default servemux
+
+In this example we have been using the default serve mux.
+
+The problem with the default serve mux is that it is a global value which can be changed by any other package. 
+
+To resolve this we can just use a new servemux.
+
+```go
+mux := http.NewServeMux()
+
+// other things
+
+http.ListenAndServe(":7999", mux)
+```

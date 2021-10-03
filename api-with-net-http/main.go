@@ -83,6 +83,7 @@ func getBase64(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	mux := http.NewServeMux()
 	s := &server{
 		User: User{
 			Username: "moficodes",
@@ -91,13 +92,13 @@ func main() {
 		},
 	}
 	// because s is an instance on server it is now a handler and we can pass it to http.Handle
-	http.Handle("/", s)
-	http.HandleFunc("/user", s.user)
-	http.HandleFunc("/base64/", getBase64)
+	mux.Handle("/", s)
+	mux.HandleFunc("/user", s.user)
+	mux.HandleFunc("/base64/", getBase64)
 
 	port := "7999"
 	log.Println("starting web server on port", port)
 	// this is a blocking process
 	// go will wait for requests to come and program will not exit
-	log.Fatal(http.ListenAndServe(":"+port, nil))
+	log.Fatal(http.ListenAndServe(":"+port, mux))
 }
