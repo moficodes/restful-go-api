@@ -45,7 +45,7 @@ By default go rest api server serves requests concurrently. So if more than one 
 With docker we can setup a ephemeral postgres instance
 
 ```bash
-docker run --name postgresql-container -p 5432:5432 -e POSTGRES_PASSWORD=password -d postgres
+docker run --name postgresql-container -p 5432:5432 -e POSTGRES_PASSWORD=password -e POSTGRES_USER=postgres -d postgres
 ```
 
 This uses the `postgres` docker container and sets up a database on port `5432` with password = password. 
@@ -74,8 +74,10 @@ cd rest-api-database
 
 To load the data using psql.
 
+
+
 ```bash
-psql -h localhost -p 5432 -d postgres -f database/migration/init_schema.up.sql -U postgres
+psql -h localhost -p 5432 -d postgres -f database/migration/000001_init.up.sql -U $(whoami)
 ```
 
 ```bash
