@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: restapi
+spec:
+  type: LoadBalancer
+  selector:
+    app: restapi
+  ports:
+  - port: 80
+    targetPort: 7999

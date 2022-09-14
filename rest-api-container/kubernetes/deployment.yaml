@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: restapi
+spec:
+  selector:
+    matchLabels:
+      app: restapi
+  template:
+    metadata:
+      labels:
+        app: restapi
+    spec:
+      serviceAccountName: developer
+      containers:
+      - name: restapi
+        image: moficodes/restapi:1.1
+        ports:
+        - containerPort: 7999
+        resources:
+          requests:
+            cpu: 500m
+          limits: 
+            cpu: 500m
+        env:
+        - name: INSTANCE_HOST
+          value: "127.0.0.1"
+        - name: DB_PORT
+          value: "5432"
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: connection-config
+              key: username
+        - name: DB_PASS
+          valueFrom:
+            secretKeyRef:
+              name: connection-config
+              key: password
+        - name: DB_NAME
+          valueFrom:
+            secretKeyRef:
+              name: connection-config
+              key: database
+      - name: cloud-sql-proxy
+        # This uses the latest version of the Cloud SQL proxy
+        # It is recommended to use a specific version for production environments.
+        # See: https://github.com/GoogleCloudPlatform/cloudsql-proxy
+        image: gcr.io/cloudsql-docker/gce-proxy:latest
+        resources:
+          requests:
+            # The proxy's memory use scales linearly with the number of active
+            # connections. Fewer open connections will use less memory. Adjust
+            # this value based on your application's requirements.
+            memory: "2Gi"
+            # The proxy's CPU use scales linearly with the amount of IO between
+            # the database and the application. Adjust this value based on your
+            # application's requirements.
+            cpu: 500m
+          limits:
+            memory: "4Gi"
+            cpu: "2"
+        env:
+        - name: INSTANCE_ID
+          valueFrom:
+            secretKeyRef:
+              name: connection-config
+              key: instance_id
+        command: ["/cloud_sql_proxy"]
+        args: ["-instances=$(INSTANCE_ID)=tcp:5432"]
+        securityContext:
+          # The default Cloud SQL proxy image runs as the
+          # "nonroot" user and group (uid: 65532) by default.
+          runAsNonRoot: true
