@@ -1,0 +1,20 @@
+version: '3'
+services:
+  cloudsql-proxy:
+    container_name: cloudsql-proxy
+    image: gcr.io/cloudsql-docker/gce-proxy:1.32.0
+    command: /cloud_sql_proxy --dir=/cloudsql -instances=${INSTANCE_ID}=tcp:0.0.0.0:5432 -credential_file=/secrets/cloudsql/credentials.json
+    ports:
+      - 127.0.0.1:5432:5432
+    volumes:
+      - ./keys.json:/secrets/cloudsql/credentials.json
+    restart: always
+  restapi:
+    container_name: restapi
+    image: moficodes/restapi:1.0
+    command: /app
+    env_file: 
+      - .docker.env
+    ports: 
+      - 7999:7999
+    restart: always
