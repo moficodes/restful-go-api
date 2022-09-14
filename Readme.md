@@ -54,7 +54,11 @@ At each level of the workshop the branch should be working code. If it is not I 
 5. Testing and Benchmarking
     - [Unit Testing](https://github.com/moficodes/restful-go-api/tree/testing-benchmarking-01/testing-benchmark)
     - [Unit Testing With Echo](https://github.com/moficodes/restful-go-api/tree/testing-benchmarking-echo-01/testing-benchmark-echo)
-   
+
 6. Database
-   - [Postgres Database](https://github.com/moficodes/restful-go-api/tree/rest-api-database-01/rest-api-database#go--postgres)
-   - [Testing Database](https://github.com/moficodes/restful-go-api/tree/rest-api-database-02/rest-api-database#testing)
+    - [Postgres Database](https://github.com/moficodes/restful-go-api/tree/rest-api-database-01/rest-api-database#go--postgres)
+    - [Testing Database](https://github.com/moficodes/restful-go-api/tree/rest-api-database-02/rest-api-database#testing)
+
+7. Containers
+    - [Docker Compose](https://github.com/moficodes/restful-go-api/tree/containers-01/rest-api-container)
+    - [Kubernetes](https://github.com/moficodes/restful-go-api/tree/containers-02/rest-api-container)
