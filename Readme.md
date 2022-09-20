@@ -59,6 +59,6 @@ At each level of the workshop the branch should be working code. If it is not I 
     - [Postgres Database](https://github.com/moficodes/restful-go-api/tree/rest-api-database-01/rest-api-database#go--postgres)
     - [Testing Database](https://github.com/moficodes/restful-go-api/tree/rest-api-database-02/rest-api-database#testing)
 
-7. Application Deliver
+7. Application Delivery
     - [Docker Compose](https://github.com/moficodes/restful-go-api/tree/containers-01/rest-api-container)
     - [Kubernetes](https://github.com/moficodes/restful-go-api/tree/containers-02/rest-api-container)
