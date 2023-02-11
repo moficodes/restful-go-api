@@ -1,6 +1,6 @@
 module github.com/moficodes/restful-go-api/pkg
 
-go 1.14
+go 1.20
 
 require (
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible

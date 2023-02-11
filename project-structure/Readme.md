@@ -84,4 +84,3 @@ I have using this structure for my project recently. One great benefit is that, 
 _Which one should I choose?_
 
 > Like most things in technology the answer is "It depends". If you are starting a new project you are pretty much free to structure your code in any way you like. 
-
