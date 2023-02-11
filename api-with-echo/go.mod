@@ -1,13 +1,17 @@
 module github.com/moficodes/restful-go-api/echo
 
-go 1.16
+go 1.20
+
+require github.com/labstack/echo/v4 v4.10.0
 
 require (
-	github.com/gorilla/mux v1.8.0 // indirect
-	github.com/labstack/echo v3.3.10+incompatible
-	github.com/labstack/echo/v4 v4.2.2 // indirect
-	github.com/mattn/go-colorable v0.1.8 // indirect
-	golang.org/x/crypto v0.0.0-20210415154028-4f45737414dc // indirect
-	golang.org/x/net v0.0.0-20210415231046-e915ea6b2b7d // indirect
-	golang.org/x/sys v0.0.0-20210415045647-66c3f260301c // indirect
+	github.com/labstack/gommon v0.4.0 // indirect
+	github.com/mattn/go-colorable v0.1.13 // indirect
+	github.com/mattn/go-isatty v0.0.17 // indirect
+	github.com/valyala/bytebufferpool v1.0.0 // indirect
+	github.com/valyala/fasttemplate v1.2.2 // indirect
+	golang.org/x/crypto v0.6.0 // indirect
+	golang.org/x/net v0.6.0 // indirect
+	golang.org/x/sys v0.5.0 // indirect
+	golang.org/x/text v0.7.0 // indirect
 )
