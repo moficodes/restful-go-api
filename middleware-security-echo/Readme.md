@@ -110,7 +110,7 @@ curl -H "Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoi
 Our server should respond back with
 ```json
 {
-  "message": "hello John Doe"
+  "data": "John Doe"
 }
 ```
 
