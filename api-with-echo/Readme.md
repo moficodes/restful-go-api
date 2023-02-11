@@ -78,6 +78,52 @@ We can do the same thing for path Parameters too.
 curl localhost:7999/instructors/1
 ```
 
+We could also use query parameters like
+
+```bash
+curl "localhost:7999/api/v1/courses?topic=go&topic=devops"
+```
+
+Query parameters don't have any generic syntax that talks about how query params should be formatted. For example you can find multiple different ways to pass these value
+
+[RFC 3986: Uniform Resource Identifier (URI): Generic Syntax](https://www.rfc-editor.org/rfc/rfc3986) has not no fix guidance on how to do it. You will probably find all these different ways to pass multiple query values for the same key. Its left up to practioners on how to deal with these.
+
+1. example.com/path?name=name1&name=name2
+2. example.com/path?name=name1,name2
+3. example.com/path?name=[name1,name2]
+
+In our code we implement the first way. Its no more right than any other way. Also its upto us to determine whether we are choosing to take in an array or taking only one of the query param.
+
+For example
+
+```bash
+curl "localhost:7999/api/v1/courses?instructor=1&instructor=2"
+```
+
+will only take the first query to filter by. 
+
+But
+
+```bash
+curl "localhost:7999/api/v1/courses?topic=go&topic=devops"
+```
+
+Will take both query and only return courses that has both `go` and `devops` in their topic.
+
+So we are implementing is as a logical `and` operator. 
+
+```bash
+curl "localhost:7999/api/v1/users?interest=go&interest=swift&interest=hadoop"
+```
+
+will return users who has interest in go, swift and haddop.
+
+It is also reasonable to implement that as a logical `or` depending on your application. We might want to find any course where userId 1, 2 or 3 signed up. The code currently does not do this. You can take it as an excercise to implement this.
+
+> Hint: You can look at the `Contains` function to see what you need to change to make it work as logical or.
+
+As long as we are implementing the behaviour we expect from our application we are fine. 
+
 ## Group
 
 So far we have been adding all our routes at the top level of our hostname. i.e. `localhost:7999/<route>`. But there are times when it is desired to have routes that are grouped together based on some criteria. For example we might want all our authentication routes grouped together under `/auth` or we could want to version our api with `/api/v1`. With a sub-router it is possible to apply rules and logic to a group of routes instead of applying these rules individually.
