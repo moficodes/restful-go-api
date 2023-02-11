@@ -81,8 +81,6 @@ Echo has a list of middlewares built in from the middleware package. This includ
 
 JSON Web Tokens are an open, industry standard [RFC 7519](https://tools.ietf.org/html/rfc7519) method for representing claims securely between two parties. It is very easy to verify JWT tokens in go.
 
-We make use of the very popular [jwt-go](https://godoc.org/github.com/dgrijalva/jwt-go#example-Parse--Hmac) library to validate a JWT Token. 
-
 In this example we will be validating a JWT token that we generate in [jwt.io](jwt.io) website. With a payload (feel free to use any name or even any other payload here)
 
 ```json
@@ -114,13 +112,33 @@ Our server should respond back with
 }
 ```
 
-> The default mw for echo and JWT is not working at this moment. This has to do with jwt-go, the underlying library version. [See this issue](https://github.com/labstack/echo/issues/1614). But we can very easily write this middleware ourselves like we did here. Once the library version updates in echo we can use that too. 
+The `jwtCustomClaims` struct embeds `jwt.RegisteredClaims` struct. Which makes `jwtCustomClaims` an implementer of `Claims` interface. Struct embedding is interesting read more about it in [gobyexample](https://gobyexample.com/struct-embedding). 
 
 ```go
-type CustomContext struct {
-	echo.Context
-	Claims jwt.MapClaims
+type jwtCustomClaims struct {
+	Name string `json:"name"`
+	jwt.RegisteredClaims
 }
 ```
 
-We can add to echo context that we can use in any of the request. In this case we add the `jwt.MapClaims` to our custom context that we can use in our handler later.
+This custom claim is being set because we setup echojwt with a config
+
+```go
+config := echojwt.Config{
+	NewClaimsFunc: func(c echo.Context) jwt.Claims {
+		return new(jwtCustomClaims)
+	},
+	SigningKey: []byte("very-secret"),
+}
+```
+
+In our `HandlerFunc` we grab the token value set onto our `echo.Context` with key `user`. This is the default value. We could have changed it with the config above if we wanted to. If you want to see how this got set you can take a look at the [implementation here](https://github.com/labstack/echo-jwt/blob/95b0b607987a3bed484870b2052ef212763742a4/jwt.go#L233)
+
+```go
+func restricted(c echo.Context) error {
+	user := c.Get("user").(*jwt.Token)
+	claims := user.Claims.(*jwtCustomClaims)
+	name := claims.Name
+	return c.JSON(http.StatusOK, Message{Data: name})
+}
+```
