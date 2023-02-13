@@ -56,9 +56,13 @@ We have a database init script that can setup some tables and some initial data.
 
 You can either run the sql queries using some tool like [Dbeaver](https://dbeaver.io/) or [DataGrip](https://www.jetbrains.com/datagrip/). If you have any Jet Brains producs like Goland or Intellij you already have a database tool built in. You can also use command line tool `psql` 
 
+If using `psql` you can run the following command to load the data. 
 
+```bash
+psql -h localhost -p 5432 -d postgres -f database/migration/000001_init.up.sql -U posgres
+```
 
-This will prompt you for password which is password. It will then load up our data. 
+This will prompt you for password which is `password`. It will then load up our data. 
 
 ## Run the example
 
