@@ -54,7 +54,7 @@ This uses the `postgres` docker container and sets up a database on port `5432` 
 
 We have a database init script that can setup some tables and some initial data. 
 
-You can either run the sql queries using some tool like [Dbeaver](https://dbeaver.io/) or [DataGrip](https://www.jetbrains.com/datagrip/). If you have any Jet Brains producs like Goland or Intellij you already have a database tool built in. You can also use command line tool `psql` 
+You can either run the sql queries using some tool like [Dbeaver](https://dbeaver.io/) or [DataGrip](https://www.jetbrains.com/datagrip/). If you have any Jet Brains producs like Goland or Intellij you already have a database tool built in. You can also use command line tool `psql`.
 
 If using `psql` you can run the following command to load the data. 
 
