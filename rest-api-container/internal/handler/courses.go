@@ -2,6 +2,7 @@ package handler
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -10,6 +11,7 @@ import (
 func (h *Handler) GetAllCourses(c echo.Context) error {
 	courses, err := h.DB.GetAllCourses()
 	if err != nil {
+		log.Println(err)
 		return echo.NewHTTPError(http.StatusInternalServerError, "error fetching data")
 	}
 	return c.JSON(http.StatusOK, courses)
@@ -24,6 +26,7 @@ func (h *Handler) GetCoursesByID(c echo.Context) error {
 	course, err := h.DB.GetCoursesByID(id)
 
 	if err != nil {
+		log.Println(err)
 		return echo.NewHTTPError(http.StatusInternalServerError, "error fetching data")
 	}
 

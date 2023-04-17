@@ -2,6 +2,7 @@ package handler
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -31,6 +32,7 @@ func (h *Handler) GetInstructorByID(c echo.Context) error {
 
 	instructor, err := h.DB.GetInstructorByID(id)
 	if err != nil {
+		log.Println(err)
 		return echo.NewHTTPError(http.StatusInternalServerError, "error fetching data")
 	}
 
