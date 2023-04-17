@@ -1,16 +1,17 @@
 package main
 
 import (
-	"context"
+	"database/sql"
 	"fmt"
 	"log"
 	"os"
 
+	"cloud.google.com/go/cloudsqlconn"
+	"cloud.google.com/go/cloudsqlconn/postgres/pgxv4"
 	"github.com/labstack/echo/v4"
 	echoMiddleware "github.com/labstack/echo/v4/middleware"
 	"github.com/moficodes/restful-go-api/database/internal/datasource"
 	"github.com/moficodes/restful-go-api/database/internal/handler"
-	"github.com/moficodes/restful-go-api/database/pkg/database"
 	"github.com/moficodes/restful-go-api/database/pkg/middleware"
 
 	_ "github.com/joho/godotenv/autoload"
@@ -25,24 +26,45 @@ func Chain(h echo.HandlerFunc, middleware ...func(echo.HandlerFunc) echo.Handler
 	return h
 }
 
-func main() {
-	var (
-		dbUser    = os.Getenv("DB_USER")       // e.g. 'my-db-user'
-		dbPwd     = os.Getenv("DB_PASS")       // e.g. 'my-db-password'
-		dbTCPHost = os.Getenv("INSTANCE_HOST") // e.g. '127.0.0.1' ('172.17.0.1' if deployed to GAE Flex)
-		dbPort    = os.Getenv("DB_PORT")       // e.g. '5432'
-		dbName    = os.Getenv("DB_NAME")       // e.g. 'my-database'
-	)
-
-	dbURI := fmt.Sprintf("host=%s user=%s password=%s port=%s database=%s",
-		dbTCPHost, dbUser, dbPwd, dbPort, dbName)
-	pool, err := database.PGPool(context.Background(), dbURI)
+// getDB creates a connection to the database
+// based on environment variables.
+func getDB() (*sql.DB, func() error) {
+	cleanup, err := pgxv4.RegisterDriver("cloudsql-postgres", cloudsqlconn.WithIAMAuthN())
 	if err != nil {
-		log.Fatalln(err)
+		log.Fatalf("Error on pgxv4.RegisterDriver: %v", err)
 	}
-	defer pool.Close()
 
-	p := datasource.NewPostgres(pool)
+	dsn := fmt.Sprintf("host=%s user=%s dbname=%s sslmode=disable", os.Getenv("INSTANCE_CONNECTION_NAME"), os.Getenv("DB_USER"), os.Getenv("DB_NAME"))
+	db, err := sql.Open("cloudsql-postgres", dsn)
+	if err != nil {
+		log.Fatalf("Error on sql.Open: %v", err)
+	}
+
+	return db, cleanup
+}
+
+func main() {
+	// var (
+	// 	dbUser    = os.Getenv("DB_USER")       // e.g. 'my-db-user'
+	// 	dbPwd     = os.Getenv("DB_PASS")       // e.g. 'my-db-password'
+	// 	dbTCPHost = os.Getenv("INSTANCE_HOST") // e.g. '127.0.0.1' ('172.17.0.1' if deployed to GAE Flex)
+	// 	dbPort    = os.Getenv("DB_PORT")       // e.g. '5432'
+	// 	dbName    = os.Getenv("DB_NAME")       // e.g. 'my-database'
+	// )
+
+	// dbURI := fmt.Sprintf("host=%s user=%s password=%s port=%s database=%s",
+	// 	dbTCPHost, dbUser, dbPwd, dbPort, dbName)
+	// pool, err := database.PGPool(context.Background(), dbURI)
+	// if err != nil {
+	// 	log.Fatalln(err)
+	// }
+	// defer pool.Close()
+
+	db, cleanup := getDB()
+	defer cleanup()
+
+	p := datasource.NewSQL(db)
+	// p := datasource.NewPostgres(pool)
 	h := handler.NewHandler(p)
 
 	e := echo.New()
