@@ -13,7 +13,7 @@ type stringarr []string
 
 // custom Scan function for scanning intarr values from database
 func (i *intarr) Scan(value interface{}) error {
-	source, ok := value.(string) // input example 👉🏻 {"(david,38,url,1)","(david2,2,\"url 2\",2)"}
+	source, ok := value.(string)
 	if !ok {
 		return errors.New("incompatible type")
 	}
@@ -33,15 +33,16 @@ func (i *intarr) Scan(value interface{}) error {
 }
 
 func (i *stringarr) Scan(value interface{}) error {
-	source, ok := value.(string) // input example 👉🏻 {"(david,38,url,1)","(david2,2,\"url 2\",2)"}
+	source, ok := value.(string)
 	if !ok {
 		return errors.New("incompatible type")
 	}
-	source = strings.Trim(source, "{}\\")
+	source = strings.Trim(source, "{}\\\"")
 	log.Println(source)
 	var res stringarr
-	strings := strings.Split(source, ",")
-	for _, val := range strings {
+	data := strings.Split(source, ",")
+	for _, val := range data {
+		val = strings.Trim(val, "\"")
 		res = append(res, val)
 	}
 	*i = res

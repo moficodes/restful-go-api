@@ -17,7 +17,7 @@ spec:
       serviceAccountName: developer
       containers:
       - name: restapi
-        image: moficodes/restapi:v1.7.5
+        image: moficodes/restapi:v1.7.7
         ports:
         - containerPort: 7999
         resources:
