@@ -63,3 +63,6 @@ At each level of the workshop the branch should be working code. If it is not I 
 7. Application Delivery
     - [Docker Compose](https://github.com/moficodes/restful-go-api/tree/containers-01/rest-api-container)
     - [Kubernetes](https://github.com/moficodes/restful-go-api/tree/containers-02/rest-api-container)
+
+8. Docs Generation
+    - [Swagger](https://github.com/moficodes/restful-go-api/tree/rest-api-docs/restapi-docs-echo)
