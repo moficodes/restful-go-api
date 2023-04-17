@@ -65,4 +65,4 @@ At each level of the workshop the branch should be working code. If it is not I 
     - [Kubernetes](https://github.com/moficodes/restful-go-api/tree/containers-02/rest-api-container)
 
 8. Docs Generation
-    - [Swagger](https://github.com/moficodes/restful-go-api/tree/rest-api-docs/restapi-docs-echo)
+    - [Swagger](https://github.com/moficodes/restful-go-api/tree/rest-api-docs-01/restapi-docs-echo)
